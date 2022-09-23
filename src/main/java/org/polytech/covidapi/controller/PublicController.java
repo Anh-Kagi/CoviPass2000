@@ -2,10 +2,10 @@ package org.polytech.covidapi.controller;
 
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Inscription;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.polytech.covidapi.repository.CentreRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,9 +14,11 @@ import java.util.List;
 @RequestMapping("/public/")
 public class PublicController {
     @GetMapping("/centre/")
-    public List<Centre> listCentre() {
+    public List<Centre> rechercherCentre(CentreRepository centres, @Autowired @RequestParam(required=true) String ville) {
         // fetch centres
-        return new LinkedList<Centre>();
+
+        return centres.findAllByVilleCentre(ville);
+
     }
 
     @PostMapping("/inscrire/")
