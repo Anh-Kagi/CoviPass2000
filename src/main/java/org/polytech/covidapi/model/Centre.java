@@ -5,14 +5,36 @@ import javax.persistence.Id;
 
 @Entity
 public class Centre {
+    @Id
     private Long idCentre;
 
-    public void setIdCentre(Long idCentre) {
-        this.idCentre = idCentre;
+    private String nom;
+    private String ville;
+
+    public Centre(String nom, String ville) {
+        this.nom = nom;
+        this.ville = ville;
     }
 
-    @Id
-    public Long getIdCentre() {
-        return idCentre;
+    protected Centre() {}
+
+    public Long getId() {
+        return this.idCentre;
+    }
+
+    public String getNom() {
+        return this.nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getVille() {
+        return this.ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
     }
 }

@@ -2,30 +2,40 @@ package org.polytech.covidapi.controller;
 
 import org.polytech.covidapi.model.Admin;
 import org.polytech.covidapi.model.Centre;
+import org.polytech.covidapi.repository.CentreRepository;
+import org.polytech.covidapi.service.CentreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/super/")
 public class SuperAdminController {
+    private final CentreService centres;
+
+    @Autowired
+    public SuperAdminController(CentreService centres) {
+        this.centres = centres;
+    }
+
     //// Centres
     @PostMapping("/centre/")
-    public Centre createCentre() {
-        return null;
+    public Centre createCentre(@RequestParam(required=true) String nom, @RequestParam(required=true) String ville) {
+        return centres.create(nom, ville);
     }
 
     @GetMapping("/centre/{id}/")
     public Centre readCentre(@PathVariable Long id) {
-        return null;
+        return centres.get(id);
     }
 
     @PutMapping("/centre/{id}/")
-    public Centre updateCentre(@PathVariable Long id) {
-        return null;
+    public Centre updateCentre(@PathVariable Long id, @RequestParam String nom, @RequestParam String ville) {
+        return centres.update(id, nom, ville);
     }
 
     @DeleteMapping("/centre/{id}/")
     public boolean deleteCentre(@PathVariable Long id) {
-        return false;
+        return centres.delete(id);
     }
 
     //// Admins
