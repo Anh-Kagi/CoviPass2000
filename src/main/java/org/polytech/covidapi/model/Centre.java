@@ -6,7 +6,7 @@ import javax.persistence.Id;
 @Entity
 public class Centre {
     @Id
-    private Long idCentre;
+    private Long id;
 
     private String nom;
     private String ville;
@@ -16,10 +16,11 @@ public class Centre {
         this.ville = ville;
     }
 
-    protected Centre() {}
+    protected Centre() {
+    }
 
     public Long getId() {
-        return this.idCentre;
+        return this.id;
     }
 
     public String getNom() {

@@ -5,7 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CentreRepository extends JpaRepository<Centre, Long>  {
+public interface CentreRepository extends JpaRepository<Centre, Long> {
     Centre save(Centre centre);
+
     Centre findCentreById(Long id);
 }

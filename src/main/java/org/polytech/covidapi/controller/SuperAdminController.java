@@ -2,7 +2,7 @@ package org.polytech.covidapi.controller;
 
 import org.polytech.covidapi.model.Admin;
 import org.polytech.covidapi.model.Centre;
-import org.polytech.covidapi.repository.CentreRepository;
+import org.polytech.covidapi.service.AdminService;
 import org.polytech.covidapi.service.CentreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +11,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/super/")
 public class SuperAdminController {
     private final CentreService centres;
+    private final AdminService admins;
 
     @Autowired
-    public SuperAdminController(CentreService centres) {
+    public SuperAdminController(CentreService centres, AdminService admins) {
         this.centres = centres;
+        this.admins = admins;
     }
 
     //// Centres
     @PostMapping("/centre/")
-    public Centre createCentre(@RequestParam(required=true) String nom, @RequestParam(required=true) String ville) {
+    public Centre createCentre(@RequestParam String nom, @RequestParam String ville) {
         return centres.create(nom, ville);
     }
 
@@ -29,7 +31,7 @@ public class SuperAdminController {
     }
 
     @PutMapping("/centre/{id}/")
-    public Centre updateCentre(@PathVariable Long id, @RequestParam String nom, @RequestParam String ville) {
+    public Centre updateCentre(@PathVariable Long id, @RequestParam(required=false) String nom, @RequestParam(required=false) String ville) {
         return centres.update(id, nom, ville);
     }
 
@@ -40,22 +42,22 @@ public class SuperAdminController {
 
     //// Admins
     @PostMapping("/admin/")
-    public Admin createAdmin() {
-        return null;
+    public Admin createAdmin(@RequestParam Long id) {
+        return admins.create(id);
     }
 
     @GetMapping("/admin/{id}/")
     public Admin readAdmin(@PathVariable Long id) {
-        return null;
+        return admins.get(id);
     }
 
     @PutMapping("/admin/{id}/")
-    public Admin updateAdmin(@PathVariable Long id) {
-        return null;
+    public Admin updateAdmin(@PathVariable Long id, @RequestParam(required=false) Long centreId) {
+        return admins.update(id, centreId);
     }
 
     @DeleteMapping("/admin/{id}/")
     public boolean deleteAdmin(@PathVariable Long id) {
-        return false;
+        return admins.delete(id);
     }
 }
