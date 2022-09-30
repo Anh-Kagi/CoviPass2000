@@ -1,6 +1,8 @@
 package org.polytech.covidapi.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Admin {
@@ -13,13 +15,14 @@ public class Admin {
         setCentre(centre);
     }
 
-    protected Admin() {}
+    protected Admin() {
+    }
 
-    public Long getIdAdmin() {
+    public Long getId() {
         return id;
     }
 
-    public void setIdAdmin(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

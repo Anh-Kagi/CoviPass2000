@@ -6,18 +6,18 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Medecin {
+    @Id
+    private Long id;
 
     @ManyToOne
     private Centre centre;
-
-    @Id
-    private Long id;
 
     public Medecin(Centre centre) {
         setCentre(centre);
     }
 
-    protected Medecin() {}
+    protected Medecin() {
+    }
 
     public Long getId() {
         return id;

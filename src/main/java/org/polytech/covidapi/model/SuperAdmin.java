@@ -6,14 +6,10 @@ import javax.persistence.Id;
 @Entity
 public class SuperAdmin {
 
-    private Long idSuperAdmin;
+    private Long id;
 
     @Id
-    public Long getIdSuperAdmin() {
-        return idSuperAdmin;
-    }
-
-    public void setIdSuperAdmin(Long idSuperAdmin) {
-        this.idSuperAdmin = idSuperAdmin;
+    public Long getId() {
+        return id;
     }
 }
