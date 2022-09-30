@@ -9,14 +9,25 @@ public class Medecin {
 
     @ManyToOne
     private Centre centre;
-    private Long idMedecin;
 
     @Id
-    public Long getIdMedecin() {
-        return idMedecin;
+    private Long id;
+
+    public Medecin(Centre centre) {
+        setCentre(centre);
     }
 
-    public void setIdMedecin(Long idMedecin) {
-        this.idMedecin = idMedecin;
+    protected Medecin() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public Centre getCentre() {
+        return centre;
+    }
+
+    public void setCentre(Centre centre) {
+        this.centre = centre;
     }
 }
