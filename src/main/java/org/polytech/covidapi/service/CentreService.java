@@ -5,6 +5,8 @@ import org.polytech.covidapi.repository.CentreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CentreService {
     private final CentreRepository centres;
@@ -21,6 +23,10 @@ public class CentreService {
 
     public Centre get(Long id) {
         return centres.findCentreById(id);
+    }
+
+    public List<Centre> getAllByVille(String ville) {
+        return centres.findAllByVille(ville);
     }
 
     public Centre update(Long id, String nom, String ville) {
