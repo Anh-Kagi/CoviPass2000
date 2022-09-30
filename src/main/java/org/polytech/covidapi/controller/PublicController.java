@@ -1,7 +1,7 @@
 package org.polytech.covidapi.controller;
 
 import org.polytech.covidapi.model.Centre;
-import org.polytech.covidapi.model.Inscription;
+import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.repository.CentreRepository;
 import org.polytech.covidapi.service.CentreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class PublicController {
     }
 
     @PostMapping("/inscrire/")
-    public Inscription inscrire() {
+    public Reservation inscrire() {
         return null;
     }
 }

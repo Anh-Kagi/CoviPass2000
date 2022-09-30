@@ -1,8 +1,9 @@
 package org.polytech.covidapi.controller;
 
-import org.polytech.covidapi.model.Inscription;
 import org.polytech.covidapi.model.Medecin;
+import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.MedecinService;
+import org.polytech.covidapi.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/simple/")
 public class AdminController {
     private final MedecinService medecins;
+    private final ReservationService reservations;
 
     @Autowired
-    public AdminController(MedecinService medecins) {
+    public AdminController(MedecinService medecins, ReservationService reservations) {
         this.medecins = medecins;
+        this.reservations = reservations;
     }
 
     //// Médecins
@@ -34,12 +37,12 @@ public class AdminController {
 
     //// Réservations
     @GetMapping("/reservation/{id}/")
-    public Inscription readReservation(@PathVariable Long id) {
-        return null;
+    public Reservation readReservation(@PathVariable Long id) {
+        return reservations.get(id);
     }
 
     @DeleteMapping("/reservation/{id}/")
     public boolean deleteReservation(@PathVariable Long id) {
-        return false;
+        return reservations.delete(id);
     }
 }
