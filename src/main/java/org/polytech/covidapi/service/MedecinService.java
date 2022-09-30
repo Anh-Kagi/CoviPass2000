@@ -20,8 +20,8 @@ public class MedecinService {
 
     public Medecin create(Long centreId) {
         Centre centre = centres.findCentreById(centreId);
-            Medecin medecin = new Medecin(centre);
-            return medecins.save(medecin);
+        Medecin medecin = new Medecin(centre);
+        return medecins.save(medecin);
     }
 
     public Medecin get(Long id) {

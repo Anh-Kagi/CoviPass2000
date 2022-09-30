@@ -1,5 +1,6 @@
 package org.polytech.covidapi.service;
 
+import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,13 @@ public class ReservationService {
             return true;
         }
         return false;
+    }
+
+    public Patient validate(Long id) {
+        Reservation reservation = get(id);
+        if (reservation != null) {
+            reservation.setFaite(true);
+        }
+        return reservation.getPatient();
     }
 }

@@ -2,13 +2,10 @@ package org.polytech.covidapi.controller;
 
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Reservation;
-import org.polytech.covidapi.repository.CentreRepository;
 import org.polytech.covidapi.service.CentreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -22,7 +19,7 @@ public class PublicController {
     }
 
     @GetMapping("/centre/")
-    public List<Centre> rechercherCentre(@RequestParam(required=true) String ville) {
+    public List<Centre> rechercherCentre(@RequestParam(required = true) String ville) {
         return centres.getAllByVille(ville);
 
     }

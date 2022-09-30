@@ -1,6 +1,5 @@
 package org.polytech.covidapi.repository;
 
-import liquibase.pro.packaged.id;
 import org.polytech.covidapi.model.Medecin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

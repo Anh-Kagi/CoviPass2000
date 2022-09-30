@@ -31,7 +31,7 @@ public class SuperAdminController {
     }
 
     @PutMapping("/centre/{id}/")
-    public Centre updateCentre(@PathVariable Long id, @RequestParam(required=false) String nom, @RequestParam(required=false) String ville) {
+    public Centre updateCentre(@PathVariable Long id, @RequestParam(required = false) String nom, @RequestParam(required = false) String ville) {
         return centres.update(id, nom, ville);
     }
 
@@ -52,7 +52,7 @@ public class SuperAdminController {
     }
 
     @PutMapping("/admin/{id}/")
-    public Admin updateAdmin(@PathVariable Long id, @RequestParam(required=false) Long centreId) {
+    public Admin updateAdmin(@PathVariable Long id, @RequestParam(required = false) Long centreId) {
         return admins.update(id, centreId);
     }
 

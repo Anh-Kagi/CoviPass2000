@@ -34,11 +34,11 @@ public class Reservation {
         this.patient = patient;
     }
 
-    public void setFaq(boolean faite) {
-        this.faite = faite;
-    }
-
     public boolean getFaite() {
         return faite;
+    }
+
+    public void setFaite(boolean faite) {
+        this.faite = faite;
     }
 }

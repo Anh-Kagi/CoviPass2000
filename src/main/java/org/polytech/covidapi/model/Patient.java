@@ -13,15 +13,6 @@ public class Patient {
     private String prenom;
     private String mail;
     private long telephone;
-    private boolean vaccine;
-
-    public boolean getVaccine() {
-        return vaccine;
-    }
-
-    public void setVaccine(boolean vaccine) {
-        this.vaccine = vaccine;
-    }
 
     public String getNom() {
         return nom;
