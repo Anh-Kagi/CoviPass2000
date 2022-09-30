@@ -1,6 +1,8 @@
 package org.polytech.covidapi.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Inscription {
@@ -10,12 +12,12 @@ public class Inscription {
     @ManyToOne
     private Patient patient;
 
-    public void setIdInscription(Long idInscription) {
-        this.idInscription = idInscription;
-    }
-
     @Id
     public Long getIdInscription() {
         return idInscription;
+    }
+
+    public void setIdInscription(Long idInscription) {
+        this.idInscription = idInscription;
     }
 }

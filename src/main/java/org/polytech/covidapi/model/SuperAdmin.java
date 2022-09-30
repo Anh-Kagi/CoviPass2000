@@ -8,12 +8,12 @@ public class SuperAdmin {
 
     private Long idSuperAdmin;
 
-    public void setIdSuperAdmin(Long idSuperAdmin) {
-        this.idSuperAdmin = idSuperAdmin;
-    }
-
     @Id
     public Long getIdSuperAdmin() {
         return idSuperAdmin;
+    }
+
+    public void setIdSuperAdmin(Long idSuperAdmin) {
+        this.idSuperAdmin = idSuperAdmin;
     }
 }
