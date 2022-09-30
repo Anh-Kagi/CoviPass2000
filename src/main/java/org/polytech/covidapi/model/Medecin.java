@@ -1,5 +1,6 @@
 package org.polytech.covidapi.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -9,7 +10,7 @@ public class Medecin {
     @Id
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Centre centre;
 
     public Medecin(Centre centre) {

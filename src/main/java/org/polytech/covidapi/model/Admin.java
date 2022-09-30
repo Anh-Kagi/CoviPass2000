@@ -1,5 +1,6 @@
 package org.polytech.covidapi.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -8,7 +9,7 @@ import javax.persistence.OneToOne;
 public class Admin {
     @Id
     private Long id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Centre centre;
 
     public Admin(Centre centre) {

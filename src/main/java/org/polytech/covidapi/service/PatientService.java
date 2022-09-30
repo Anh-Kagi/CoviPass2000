@@ -34,8 +34,7 @@ public class PatientService {
         Patient patient = patients.findPatientById(id);
         if (patient != null) {
             List<Reservation> vaccins = reservations.findAllByPatient(patient);
-            if (vaccins.size() > VACCINAL_SCHEME)
-                return true;
+            return vaccins.size() > VACCINAL_SCHEME;
         }
         return false;
     }

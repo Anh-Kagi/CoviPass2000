@@ -5,10 +5,9 @@ import javax.persistence.Id;
 
 @Entity
 public class SuperAdmin {
-
+    @Id
     private Long id;
 
-    @Id
     public Long getId() {
         return id;
     }
