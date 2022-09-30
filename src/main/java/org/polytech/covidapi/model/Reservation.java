@@ -14,6 +14,15 @@ public class Reservation {
     private Patient patient;
     private boolean faite;
 
+    public Reservation(Centre centre, Patient patient) {
+        setCentre(centre);
+        setPatient(patient);
+        setFaite(false);
+    }
+
+    protected Reservation() {
+    }
+
     public Long getId() {
         return id;
     }

@@ -14,6 +14,16 @@ public class Patient {
     private String mail;
     private long telephone;
 
+    public Patient(String nom, String prenom, String mail, long telephone) {
+        setNom(nom);
+        setPrenom(prenom);
+        setMail(mail);
+        setTelephone(telephone);
+    }
+
+    protected Patient() {
+    }
+
     public String getNom() {
         return nom;
     }
