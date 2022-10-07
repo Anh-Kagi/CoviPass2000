@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { ListeCentresComponent } from './liste-centres/liste-centres.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChoisirCentreComponent } from './choisir-centre/choisir-centre.component';
+import { AdminpageComponent } from './adminpage/adminpage.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 
 @NgModule({
@@ -12,6 +14,8 @@ import { ChoisirCentreComponent } from './choisir-centre/choisir-centre.componen
     AppComponent,
     ListeCentresComponent,
     ChoisirCentreComponent,
+    AdminpageComponent,
+    AdminLoginComponent,
    
   ],
   imports: [
