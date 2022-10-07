@@ -8,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class ListeCentresComponent implements OnInit {
   titre:string="CovidApi";
   nomSearchBar = "Trouver un centre de vaccination";
+  nomCentre = "Centre de Nancy CHU"; 
+  adresseCentre = "11 Avenue de la République"; 
+
   constructor() { }
 
   ngOnInit(): void {
