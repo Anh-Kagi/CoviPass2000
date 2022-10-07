@@ -9,6 +9,10 @@ import javax.persistence.OneToOne;
 public class Admin {
     @Id
     private Long id;
+
+    private String username;
+    private String hash;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Centre centre;
 
@@ -33,5 +37,21 @@ public class Admin {
 
     public void setCentre(Centre centre) {
         this.centre = centre;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getHash() {
+        return this.hash;
     }
 }

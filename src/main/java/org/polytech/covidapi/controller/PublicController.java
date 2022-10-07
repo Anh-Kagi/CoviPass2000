@@ -22,7 +22,7 @@ public class PublicController {
     }
 
     @GetMapping("/centre/")
-    public List<Centre> rechercherCentre(@RequestParam(required = true) String ville) {
+    public List<Centre> rechercherCentre(@RequestParam String ville) {
         return centres.getAllByVille(ville);
 
     }
