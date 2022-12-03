@@ -1,31 +1,33 @@
 package org.polytech.covidapi.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Reservation {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne
     private Centre centre;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Patient patient;
     private boolean faite;
 
+    protected Reservation() {}
+    
     public Reservation(Centre centre, Patient patient) {
         setCentre(centre);
         setPatient(patient);
         setFaite(false);
     }
 
-    protected Reservation() {
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Centre getCentre() {

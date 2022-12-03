@@ -28,7 +28,7 @@ public class PublicController {
 
     @GetMapping("/centre/")
     public ResponseEntity<List<Centre>> rechercherCentre(@RequestParam String ville) {
-        Optional<ResponseEntity> token = rateLimit.tryConsume();
+        Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
         if (token.isPresent()) {
             return token.get();
         }
@@ -37,7 +37,7 @@ public class PublicController {
 
     @PostMapping("/inscrire/")
     public ResponseEntity<Reservation> inscrire(@RequestParam Long centreId, String nom, String prenom, String mail, long telephone) {
-        Optional<ResponseEntity> token = rateLimit.tryConsume();
+        Optional<ResponseEntity<Reservation>> token = rateLimit.tryConsume();
         if (token.isPresent()) {
             return token.get();
         }

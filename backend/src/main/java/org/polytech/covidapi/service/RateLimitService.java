@@ -15,7 +15,7 @@ import java.util.Optional;
 public class RateLimitService {
     private final Bucket bucket = Bucket.builder().addLimit(Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1)))).build();
 
-    public Optional<ResponseEntity<Void>> tryConsume() {
+    public<T> Optional<ResponseEntity<T>> tryConsume() {
         ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
         if (!probe.isConsumed()) {
             return Optional.of(ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
