@@ -44,7 +44,7 @@ public class CovidApiApplication {
     }
 
     @Bean
-    public EtagFilter etagFilter() {
+    public ShallowEtagHeaderFilter etagFilter() {
         return new EtagFilter();
     }
 }

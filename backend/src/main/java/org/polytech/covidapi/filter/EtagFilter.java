@@ -23,7 +23,7 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // si method alternative, check etag, error si different
-        if (modMethods.contains(request.getMethod().toString()) && cached.contains(request.getHeader(HttpHeaders.IF_MATCH))) {
+        if (modMethods.contains(request.getMethod().toString()) && !cached.contains(request.getHeader(HttpHeaders.IF_MATCH))) {
             response.sendError(HttpStatus.PRECONDITION_FAILED.value());
             return;
         }
@@ -45,7 +45,7 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
 
     @Override
     protected boolean isEligibleForEtag(HttpServletRequest request, HttpServletResponse response, int responseStatusCode, InputStream inputStream) {
-        if (response.isCommitted() && responseStatusCode >= 200 && responseStatusCode < 300) {
+        if (responseStatusCode >= 200 && responseStatusCode < 300) {
             String cacheControl = response.getHeader(HttpHeaders.CACHE_CONTROL);
             return cacheControl == null || !cacheControl.contains("no-store");
         }

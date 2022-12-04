@@ -1,5 +1,0 @@
-FROM jenkins/jenkins:lts-alpine
-USER root
-RUN apk add --no-cache docker-cli
-USER jenkins
-RUN jenkins-plugin-cli --plugins "blueocean:1.25.8 docker-workflow:521.v1a_a_dd2073b_2e"

@@ -11,5 +11,10 @@ spring:
     open-in-view: false
   liquibase:
     enabled: false
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 365d
 server:
   port: ${APP_PORT}
