@@ -1,10 +1,10 @@
-FROM gradle:7-alpine AS builder
+FROM gradle:jdk19-alpine AS builder
 
 WORKDIR /
 
 COPY backend/ /
 
-RUN gradle clean --no-daemon && gradle bootJar --no-daemon
+RUN gradle bootJar --no-daemon
 
 FROM openjdk:19-jdk-slim
 
