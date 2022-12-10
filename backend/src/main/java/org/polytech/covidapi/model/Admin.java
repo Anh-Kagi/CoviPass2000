@@ -1,5 +1,8 @@
 package org.polytech.covidapi.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,12 +11,20 @@ import javax.persistence.OneToOne;
 @Entity
 public class Admin {
     @Id
+    @Setter
     private Long id;
 
+    @Getter
+    @Setter
     private String username;
+
+    @Getter
+    @Setter
     private String hash;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @Getter
+    @Setter
     private Centre centre;
 
     public Admin(Centre centre) {
@@ -21,37 +32,5 @@ public class Admin {
     }
 
     protected Admin() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Centre getCentre() {
-        return this.centre;
-    }
-
-    public void setCentre(Centre centre) {
-        this.centre = centre;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
-    public String getHash() {
-        return this.hash;
     }
 }
