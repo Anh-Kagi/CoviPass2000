@@ -4,6 +4,7 @@ services:
   app:
     build: backend
     restart: unless-stopped
+    command: "--spring.profiles.active=dev"
     ports:
       - 8080:${APP_PORT}
     environment:
