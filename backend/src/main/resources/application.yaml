@@ -5,11 +5,16 @@ spring:
     password: ${DB_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     open-in-view: false
   liquibase:
     enabled: false
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 365d
 server:
   port: ${APP_PORT}

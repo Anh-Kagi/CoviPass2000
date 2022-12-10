@@ -6,9 +6,11 @@ import org.polytech.covidapi.service.CentreService;
 import org.polytech.covidapi.service.RateLimitService;
 import org.polytech.covidapi.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,18 +31,12 @@ public class PublicController {
     @GetMapping("/centre/")
     public ResponseEntity<List<Centre>> rechercherCentre(@RequestParam String ville) {
         Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
-        if (token.isPresent()) {
-            return token.get();
-        }
-        return ResponseEntity.ok(centres.getAllByVille(ville));
+        return token.orElseGet(() -> ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofHours(1))).body(centres.getAllByVille(ville)));
     }
 
     @PostMapping("/inscrire/")
     public ResponseEntity<Reservation> inscrire(@RequestParam Long centreId, String nom, String prenom, String mail, long telephone) {
         Optional<ResponseEntity<Reservation>> token = rateLimit.tryConsume();
-        if (token.isPresent()) {
-            return token.get();
-        }
-        return ResponseEntity.ok(reservations.create(centreId, nom, prenom, mail, telephone));
+        return token.orElseGet(() -> ResponseEntity.ok(reservations.create(centreId, nom, prenom, mail, telephone)));
     }
 }

@@ -3,7 +3,7 @@ version: "3"
 services:
   jenkins:
     build:
-      dockerfile: Dockerfile.jenkins
+      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       DOCKER_CERT_PATH: /certs/client
