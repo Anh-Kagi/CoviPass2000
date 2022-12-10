@@ -5,26 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Admin {
-    @Id
-    @Setter
-    private Long id;
-
+public class Admin extends BaseUser {
     @Getter
     @Setter
-    private String username;
-
-    @Getter
-    @Setter
-    private String hash;
-
     @OneToOne(cascade = CascadeType.ALL)
-    @Getter
-    @Setter
     private Centre centre;
 
     public Admin(Centre centre) {

@@ -5,18 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Medecin {
-    @Id
-    @Getter
-    private Long id;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+public class Medecin extends BaseUser {
     @Getter
     @Setter
+    @ManyToOne(cascade = CascadeType.ALL)
     private Centre centre;
 
     public Medecin(Centre centre) {

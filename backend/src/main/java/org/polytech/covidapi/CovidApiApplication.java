@@ -35,9 +35,13 @@ public class CovidApiApplication {
                 .anyRequest().permitAll()
                 .and().httpBasic(Customizer.withDefaults())
                 .cors().disable()
-                .csrf().disable()
+                .csrf().disable()  // TODO: enable
                 .userDetailsService(auth)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .and()
+                .formLogin().loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
+                .and()
+                .logout().logoutUrl("/logout");
         return http.build();
     }
 
