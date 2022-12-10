@@ -1,0 +1,17 @@
+[
+  {
+    "_class": "org.polytech.covidapi.model.Medecin",
+    "username": "medecin",
+    "hash": "{noop}medecin"
+  },
+  {
+    "_class": "org.polytech.covidapi.model.Admin",
+    "username": "admin",
+    "hash": "{noop}admin"
+  },
+  {
+    "_class": "org.polytech.covidapi.model.SuperAdmin",
+    "username": "sadmin",
+    "hash": "{noop}sadmin"
+  }
+]
