@@ -3,6 +3,8 @@ package org.polytech.covidapi.service;
 import org.polytech.covidapi.model.BaseUser;
 import org.polytech.covidapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,10 +25,12 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<BaseUser> user = users.findByUsername(username);
+        Optional<BaseUser> user_opt = users.findByUsername(username);
 
-        if (user.isPresent()) {
-            return new User(user.get().getUsername(), user.get().getHash(), List.of());
+        if (user_opt.isPresent()) {
+            BaseUser user = user_opt.get();
+            GrantedAuthority gauth = new SimpleGrantedAuthority(user.getRole());
+            return new User(user.getUsername(), user.getHash(), List.of(gauth));
         }
         throw new UsernameNotFoundException(username + "not found");
     }

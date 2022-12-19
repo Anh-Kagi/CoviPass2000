@@ -18,6 +18,10 @@ public class Medecin extends BaseUser {
         setCentre(centre);
     }
 
-    protected Medecin() {
+    protected Medecin() {}
+
+    @Override
+    public String getRole() {
+        return "ROLE_MEDECIN";
     }
 }

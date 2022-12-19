@@ -20,4 +20,9 @@ public class Admin extends BaseUser {
 
     protected Admin() {
     }
+
+    @Override
+    public String getRole() {
+        return "ROLE_ADMIN";
+    }
 }

@@ -5,9 +5,11 @@ import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.service.AdminService;
 import org.polytech.covidapi.service.CentreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Secured({ "ROLE_SUPER_ADMIN" })
 @RequestMapping("/admin/super/")
 public class SuperAdminController {
     private final CentreService centres;

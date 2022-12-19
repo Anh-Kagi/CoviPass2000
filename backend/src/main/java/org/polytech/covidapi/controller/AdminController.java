@@ -5,9 +5,11 @@ import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.MedecinService;
 import org.polytech.covidapi.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Secured({ "ROLE_ADMIN" })
 @RequestMapping("/admin/simple/")
 public class AdminController {
     private final MedecinService medecins;

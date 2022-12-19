@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class BaseUser {
+public abstract class BaseUser {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +21,6 @@ public class BaseUser {
     @Getter
     @Setter
     private String hash;
+
+    public abstract String getRole();
 }
