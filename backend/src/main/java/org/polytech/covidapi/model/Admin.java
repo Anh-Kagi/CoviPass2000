@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Admin extends BaseUser {
+public class Admin extends User {
     @Getter
     @Setter
     @OneToOne(cascade = CascadeType.ALL)

@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Medecin extends BaseUser {
+public class Medecin extends User {
     @Getter
     @Setter
     @ManyToOne(cascade = CascadeType.ALL)

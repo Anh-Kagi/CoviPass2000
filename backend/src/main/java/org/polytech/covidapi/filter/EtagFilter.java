@@ -19,11 +19,11 @@ import java.util.Set;
 
 public class EtagFilter extends ShallowEtagHeaderFilter {
     private final List<String> modMethods = Arrays.asList(HttpMethod.POST.toString(), HttpMethod.PUT.toString(), HttpMethod.DELETE.toString());
-    private final Set<String> cached = new HashSet<String>();
+    private final Set<String> cached = new HashSet<>();
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // si method alternative, check etag, error si different
-        if (modMethods.contains(request.getMethod().toString()) && !cached.contains(request.getHeader(HttpHeaders.IF_MATCH))) {
+        if (modMethods.contains(request.getMethod()) && !cached.contains(request.getHeader(HttpHeaders.IF_MATCH))) {
             response.sendError(HttpStatus.PRECONDITION_FAILED.value());
             return;
         }

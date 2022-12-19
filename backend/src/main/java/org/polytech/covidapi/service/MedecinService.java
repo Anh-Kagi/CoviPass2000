@@ -29,7 +29,7 @@ public class MedecinService {
     }
 
     public Medecin update(Long id, Long centreId) {
-        Centre centre = centres.findCentreById(id);
+        Centre centre = centres.findCentreById(centreId);
         Medecin medecin = get(id);
         medecin.setCentre(centre);
         return medecins.save(medecin);
