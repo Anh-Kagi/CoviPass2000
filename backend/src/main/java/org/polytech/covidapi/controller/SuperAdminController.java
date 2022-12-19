@@ -1,15 +1,16 @@
 package org.polytech.covidapi.controller;
 
-import org.polytech.covidapi.model.Admin;
+import lombok.NonNull;
+import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.service.AdminService;
 import org.polytech.covidapi.service.CentreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
-@Secured({ "ROLE_SUPER_ADMIN" })
 @RequestMapping("/admin/super/")
 public class SuperAdminController {
     private final CentreService centres;
@@ -28,12 +29,12 @@ public class SuperAdminController {
     }
 
     @GetMapping("/centre/{id}/")
-    public Centre readCentre(@PathVariable Long id) {
+    public Optional<Centre> readCentre(@PathVariable Long id) {
         return centres.get(id);
     }
 
     @PutMapping("/centre/{id}/")
-    public Centre updateCentre(@PathVariable Long id, @RequestParam(required = false) String nom, @RequestParam(required = false) String ville) {
+    public Optional<Centre> updateCentre(@PathVariable Long id, @RequestParam(required = false) String nom, @RequestParam(required = false) String ville) {
         return centres.update(id, nom, ville);
     }
 
@@ -44,18 +45,18 @@ public class SuperAdminController {
 
     //// Admins
     @PostMapping("/admin/")
-    public Admin createAdmin(@RequestParam Long id) {
-        return admins.create(id);
+    public Optional<Account> createAdmin(@RequestParam @NonNull String username, @RequestParam @NonNull String password, @RequestParam @NonNull Long centreId) {
+        return admins.create(username, password, centreId);
     }
 
     @GetMapping("/admin/{id}/")
-    public Admin readAdmin(@PathVariable Long id) {
+    public Optional<Account> readAdmin(@PathVariable Long id) {
         return admins.get(id);
     }
 
     @PutMapping("/admin/{id}/")
-    public Admin updateAdmin(@PathVariable Long id, @RequestParam(required = false) Long centreId) {
-        return admins.update(id, centreId);
+    public Optional<Account> updateAdmin(@PathVariable Long id, @RequestParam(required = false) String username, @RequestParam(required = false) String password, @RequestParam(required = false) Long centreId) {
+        return admins.update(id, username, password, centreId);
     }
 
     @DeleteMapping("/admin/{id}/")

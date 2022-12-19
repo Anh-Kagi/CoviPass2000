@@ -35,8 +35,8 @@ public class PublicController {
     }
 
     @PostMapping("/inscrire/")
-    public ResponseEntity<Reservation> inscrire(@RequestParam Long centreId, String nom, String prenom, String mail, long telephone) {
-        Optional<ResponseEntity<Reservation>> token = rateLimit.tryConsume();
+    public ResponseEntity<Optional<Reservation>> inscrire(@RequestParam Long centreId, String nom, String prenom, String mail, long telephone) {
+        Optional<ResponseEntity<Optional<Reservation>>> token = rateLimit.tryConsume();
         return token.orElseGet(() -> ResponseEntity.ok(reservations.create(centreId, nom, prenom, mail, telephone)));
     }
 }

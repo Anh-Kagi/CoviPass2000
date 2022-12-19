@@ -1,17 +1,20 @@
 [
   {
-    "_class": "org.polytech.covidapi.model.Medecin",
+    "_class": "org.polytech.covidapi.model.Account",
     "username": "medecin",
-    "hash": "{noop}medecin"
+    "hash": "{noop}medecin",
+    "role": "MEDECIN"
   },
   {
-    "_class": "org.polytech.covidapi.model.Admin",
+    "_class": "org.polytech.covidapi.model.Account",
     "username": "admin",
-    "hash": "{noop}admin"
+    "hash": "{noop}admin",
+    "role": "ADMIN"
   },
   {
-    "_class": "org.polytech.covidapi.model.SuperAdmin",
+    "_class": "org.polytech.covidapi.model.Account",
     "username": "sadmin",
-    "hash": "{noop}sadmin"
+    "hash": "{noop}sadmin",
+    "role": "SUPER_ADMIN"
   }
 ]

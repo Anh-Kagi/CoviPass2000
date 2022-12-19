@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CentreService {
@@ -21,7 +22,7 @@ public class CentreService {
         return centres.save(centre);
     }
 
-    public Centre get(Long id) {
+    public Optional<Centre> get(Long id) {
         return centres.findCentreById(id);
     }
 
@@ -29,13 +30,17 @@ public class CentreService {
         return centres.findAllByVille(ville);
     }
 
-    public Centre update(Long id, String nom, String ville) {
-        Centre centre = get(id);
-        if (nom != null)
-            centre.setNom(nom);
-        if (ville != null)
-            centre.setVille(ville);
-        return save(centre);
+    public Optional<Centre> update(Long id, String nom, String ville) {
+        Optional<Centre> centre_opt = get(id);
+        if (centre_opt.isPresent()) {
+            Centre centre = centre_opt.get();
+            if (nom != null)
+                centre.setNom(nom);
+            if (ville != null)
+                centre.setVille(ville);
+            return Optional.of(centres.save(centre));
+        }
+        return Optional.empty();
     }
 
     public boolean delete(Long id) {
@@ -45,9 +50,5 @@ public class CentreService {
         } else {
             return false;
         }
-    }
-
-    private Centre save(Centre centre) {
-        return centres.save(centre);
     }
 }

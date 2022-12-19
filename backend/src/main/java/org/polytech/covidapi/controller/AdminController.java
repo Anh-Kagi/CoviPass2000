@@ -1,15 +1,17 @@
 package org.polytech.covidapi.controller;
 
-import org.polytech.covidapi.model.Medecin;
+import lombok.NonNull;
+import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Reservation;
+import org.polytech.covidapi.model.Role;
 import org.polytech.covidapi.service.MedecinService;
 import org.polytech.covidapi.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
-@Secured({ "ROLE_ADMIN" })
 @RequestMapping("/admin/simple/")
 public class AdminController {
     private final MedecinService medecins;
@@ -23,23 +25,28 @@ public class AdminController {
 
     //// Médecins
     @PostMapping("/medecin/")
-    public Medecin createMedecin(@RequestParam(required = false) Long centre) {
-        return medecins.create(centre);
+    public Optional<Account> createMedecin(@RequestParam @NonNull String username,
+                                           @RequestParam @NonNull String password,
+                                           @RequestParam(required = false) Long centre) {
+        return medecins.create(username, password, centre, Role.MEDECIN);
     }
 
     @GetMapping("/medecin/{id}/")
-    public Medecin readMedecin(@PathVariable Long id) {
+    public Optional<Account> readMedecin(@PathVariable Long id) {
         return medecins.get(id);
     }
 
     @PutMapping("/medecin/{id}/")
-    public Medecin updateMedecin(@PathVariable Long id, @RequestParam(required = false) Long centre) {
-        return medecins.update(id, centre);
+    public Optional<Account> updateMedecin(@PathVariable Long id,
+                                           @RequestParam(required = false) String username,
+                                           @RequestParam(required = false) String password,
+                                           @RequestParam(required = false) Long centre) {
+        return medecins.update(id, username, password, centre);
     }
 
-    //// Réservations
+    //// Reservations
     @GetMapping("/reservation/{id}/")
-    public Reservation readReservation(@PathVariable Long id) {
+    public Optional<Reservation> readReservation(@PathVariable Long id) {
         return reservations.get(id);
     }
 

@@ -1,16 +1,16 @@
 package org.polytech.covidapi.controller;
 
 import org.polytech.covidapi.model.Patient;
+import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.PatientService;
 import org.polytech.covidapi.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@Secured({ "ROLE_MEDECIN" })
 @RequestMapping("/admin/medecin/")
 public class MedecinController {
     private final PatientService patients;
@@ -30,7 +30,7 @@ public class MedecinController {
 
     //// Vaccination
     @PutMapping("/patient/{id}/")
-    public Patient updatePatient(@PathVariable Long id) {
+    public Optional<Reservation> updatePatient(@PathVariable Long id) {
         return reservations.validate(id);
     }
 }

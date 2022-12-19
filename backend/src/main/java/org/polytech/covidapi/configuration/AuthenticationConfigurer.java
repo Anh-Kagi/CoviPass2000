@@ -1,10 +1,12 @@
 package org.polytech.covidapi.configuration;
 
+import org.polytech.covidapi.model.Role;
 import org.polytech.covidapi.service.AuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -15,12 +17,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@EnableWebSecurity
 @Configuration
 public class AuthenticationConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthService auth) throws Exception {
         http.authorizeHttpRequests()
-                .mvcMatchers("/admin/**").authenticated()
+                .antMatchers("/admin/super/**").hasRole(Role.SUPER_ADMIN.getName())
+                .antMatchers("/admin/simple/**").hasAnyRole(Role.ADMIN.getName(), Role.SUPER_ADMIN.getName())
+                .antMatchers("/admin/medecin/**").hasAnyRole(Role.MEDECIN.getName(), Role.ADMIN.getName(), Role.SUPER_ADMIN.getName())
+                .antMatchers("/admin/**").authenticated()
                 .anyRequest().permitAll()
                 .and().httpBasic(Customizer.withDefaults())
                 .cors().disable()
@@ -28,9 +35,9 @@ public class AuthenticationConfigurer {
                 .userDetailsService(auth)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
-                .formLogin().loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
+                .formLogin().loginProcessingUrl("/login/").usernameParameter("username").passwordParameter("password")
                 .and()
-                .logout().logoutUrl("/logout");
+                .logout().logoutUrl("/logout/").logoutSuccessUrl("/").invalidateHttpSession(true);
         return http.build();
     }
 

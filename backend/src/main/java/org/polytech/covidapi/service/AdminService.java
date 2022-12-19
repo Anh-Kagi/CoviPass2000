@@ -1,46 +1,53 @@
 package org.polytech.covidapi.service;
 
-import org.polytech.covidapi.model.Admin;
+import lombok.NonNull;
+import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Centre;
-import org.polytech.covidapi.repository.AdminRepository;
+import org.polytech.covidapi.model.Role;
 import org.polytech.covidapi.repository.CentreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AdminService {
-    private final AdminRepository admins;
+    private final UserService users;
     private final CentreRepository centres;
 
     @Autowired
-    public AdminService(AdminRepository admins, CentreRepository centres) {
-        this.admins = admins;
+    public AdminService(UserService users, CentreRepository centres) {
+        this.users = users;
         this.centres = centres;
     }
 
-    public Admin create(Long centreId) {
-        Centre centre = centres.findCentreById(centreId);
-        Admin admin = new Admin(centre);
-        return admins.save(admin);
-    }
-
-    public Admin get(Long id) {
-        return admins.findAdminById(id);
-    }
-
-    public Admin update(Long id, Long centreId) {
-        Admin admin = get(id);
-        if (admin != null) {
-            Centre centre = centres.findCentreById(centreId);
-            admin.setCentre(centre);
-            return admins.save(admin);
+    @Secured({"CENTRE_CREATE"})
+    public Optional<Account> create(@NonNull String username, @NonNull String password, @NonNull Long centreId) {
+        Optional<Centre> centre_opt = centres.findCentreById(centreId);
+        if (centre_opt.isPresent()) {
+            Centre centre = centre_opt.get();
+            return Optional.ofNullable(users.create(username, password, centre, Role.ADMIN));
         }
-        return null;
+        return Optional.empty();
+    }
+
+    public Optional<Account> get(Long id) {
+        return users.findByIdAndRole(id, Role.ADMIN);
+    }
+
+    public Optional<Account> update(Long id, String username, String password, Long centreId) {
+        Optional<Centre> centre_opt = centres.findCentreById(centreId);
+        if (centre_opt.isPresent()) {
+            Centre centre = centre_opt.get();
+            return users.update(id, username, password, centre, null);
+        }
+        return Optional.empty();
     }
 
     public boolean delete(Long id) {
-        if (admins.existsById(id)) {
-            admins.deleteById(id);
+        if (users.existsByIdAndRole(id, Role.ADMIN)) {
+            users.deleteById(id);
             return true;
         }
         return false;

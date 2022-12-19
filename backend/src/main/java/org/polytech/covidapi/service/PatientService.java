@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -31,9 +32,9 @@ public class PatientService {
     public boolean isVaccine(Long id) {
         final int VACCINAL_SCHEME = 3;
 
-        Patient patient = patients.findPatientById(id);
-        if (patient != null) {
-            List<Reservation> vaccins = reservations.findAllByPatient(patient);
+        Optional<Patient> patient = patients.findPatientById(id);
+        if (patient.isPresent()) {
+            List<Reservation> vaccins = reservations.findAllByPatient(patient.get());
             return vaccins.size() > VACCINAL_SCHEME;
         }
         return false;
