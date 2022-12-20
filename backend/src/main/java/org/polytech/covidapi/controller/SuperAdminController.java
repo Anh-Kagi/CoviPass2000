@@ -24,29 +24,34 @@ public class SuperAdminController {
 
     //// Centres
     @PostMapping("/centre/")
-    public Centre createCentre(@RequestParam String nom, @RequestParam String ville) {
+    public Centre createCentre(@RequestParam @NonNull String nom,
+                               @RequestParam @NonNull String ville) {
         return centres.create(nom, ville);
     }
 
     @GetMapping("/centre/{id}/")
-    public Optional<Centre> readCentre(@PathVariable Long id) {
+    public Optional<Centre> readCentre(@PathVariable @NonNull Long id) {
         return centres.get(id);
     }
 
     @PutMapping("/centre/{id}/")
-    public Optional<Centre> updateCentre(@PathVariable Long id, @RequestParam(required = false) String nom, @RequestParam(required = false) String ville) {
+    public Optional<Centre> updateCentre(@PathVariable @NonNull Long id,
+                                         @RequestParam(required = false) String nom,
+                                         @RequestParam(required = false) String ville) {
         return centres.update(id, nom, ville);
     }
 
     @DeleteMapping("/centre/{id}/")
-    public boolean deleteCentre(@PathVariable Long id) {
+    public boolean deleteCentre(@PathVariable @NonNull Long id) {
         return centres.delete(id);
     }
 
     //// Admins
     @PostMapping("/admin/")
-    public Optional<Account> createAdmin(@RequestParam @NonNull String username, @RequestParam @NonNull String password, @RequestParam @NonNull Long centreId) {
-        return admins.create(username, password, centreId);
+    public Optional<Account> createAdmin(@RequestParam @NonNull String username,
+                                         @RequestParam @NonNull String password,
+                                         @RequestParam @NonNull Long centreId) {
+        return centres.get(centreId).map(centre -> admins.create(username, password, centre));
     }
 
     @GetMapping("/admin/{id}/")
@@ -55,12 +60,19 @@ public class SuperAdminController {
     }
 
     @PutMapping("/admin/{id}/")
-    public Optional<Account> updateAdmin(@PathVariable Long id, @RequestParam(required = false) String username, @RequestParam(required = false) String password, @RequestParam(required = false) Long centreId) {
-        return admins.update(id, username, password, centreId);
+    public Optional<Account> updateAdmin(@PathVariable @NonNull Long id,
+                                         @RequestParam(required = false) String username,
+                                         @RequestParam(required = false) String password,
+                                         @RequestParam(required = false) Long centreId) {
+        return admins.get(id).flatMap(admin -> {
+            if (centreId == null)
+                return admins.update(id, username, password, null);
+            return centres.get(centreId).flatMap(centre -> admins.update(id, username, password, centre));
+        });
     }
 
     @DeleteMapping("/admin/{id}/")
-    public boolean deleteAdmin(@PathVariable Long id) {
+    public boolean deleteAdmin(@PathVariable @NonNull Long id) {
         return admins.delete(id);
     }
 }

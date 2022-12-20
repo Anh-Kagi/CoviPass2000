@@ -1,9 +1,9 @@
 package org.polytech.covidapi.service;
 
+import lombok.NonNull;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.model.Reservation;
-import org.polytech.covidapi.repository.CentreRepository;
 import org.polytech.covidapi.repository.PatientRepository;
 import org.polytech.covidapi.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,55 +13,41 @@ import java.util.Optional;
 
 @Service
 public class ReservationService {
-    private final ReservationRepository reservations;
-    private final PatientRepository patients;
-    private final CentreRepository centres;
+	private final ReservationRepository reservations;
+	private final PatientRepository patients;
 
-    @Autowired
-    public ReservationService(ReservationRepository reservations, PatientRepository patients, CentreRepository centres) {
-        this.reservations = reservations;
-        this.patients = patients;
-        this.centres = centres;
-    }
+	@Autowired
+	public ReservationService(ReservationRepository reservations, PatientRepository patients) {
+		this.reservations = reservations;
+		this.patients = patients;
+	}
 
-    public Optional<Reservation> get(Long id) {
-        return reservations.findReservationById(id);
-    }
+	public Optional<Reservation> get(@NonNull Long id) {
+		return reservations.findById(id);
+	}
 
-    public Optional<Reservation> create(Long centreId, String nom, String prenom, String mail, long telephone) {
-        Optional<Centre> centre_opt = centres.findCentreById(centreId);
-        if (centre_opt.isPresent()) {
-            Centre centre = centre_opt.get();
-            Optional<Patient> patient_opt = patients.findPatient(nom, prenom, mail, telephone);
-            Patient patient;
-            if (patient_opt.isPresent()) {
-                patient = patient_opt.get();
-            } else {
-                patient = new Patient(nom, prenom, mail, telephone);
-                patients.save(patient);
-            }
+	public Reservation create(@NonNull Centre centre,
+							  @NonNull String nom,
+							  @NonNull String prenom,
+							  @NonNull String mail,
+							  @NonNull Long telephone) {
+		Patient patient = patients.findPatient(nom, prenom, mail, telephone)
+				.orElse(patients.save(new Patient(nom, prenom, mail, telephone)));
+		return reservations.save(new Reservation(centre, patient));
+	}
 
-            Reservation reservation = new Reservation(centre, patient);
-            return Optional.of(reservations.save(reservation));
-        }
-        return Optional.empty();
-    }
+	public boolean delete(@NonNull Long id) {
+		if (reservations.existsById(id)) {
+			reservations.deleteById(id);
+			return true;
+		}
+		return false;
+	}
 
-    public boolean delete(Long id) {
-        if (reservations.existsById(id)) {
-            reservations.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-    public Optional<Reservation> validate(Long id) {
-        Optional<Reservation> reservation_opt = get(id);
-        if (reservation_opt.isPresent()) {
-            Reservation reservation = reservation_opt.get();
-            reservation.setFaite(true);
-            return Optional.of(reservation);
-        }
-        return Optional.empty();
-    }
+	public Optional<Reservation> validate(@NonNull Long id) {
+		return get(id).map(reservation -> {
+			reservation.setFaite(true);
+			return reservations.save(reservation);
+		});
+	}
 }

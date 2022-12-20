@@ -1,5 +1,6 @@
 package org.polytech.covidapi.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 public class Reservation {
     @Id
     @Getter
+    @Setter(AccessLevel.PROTECTED)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

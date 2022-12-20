@@ -8,4 +8,5 @@ public class CovidApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(CovidApiApplication.class, args);
     }
+    // TODO: add verification into controlers (eg: admin's rights)
 }

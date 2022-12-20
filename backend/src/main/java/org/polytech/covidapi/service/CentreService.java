@@ -1,5 +1,6 @@
 package org.polytech.covidapi.service;
 
+import lombok.NonNull;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.repository.CentreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,33 +18,31 @@ public class CentreService {
         this.centres = centres;
     }
 
-    public Centre create(String nom, String ville) {
-        Centre centre = new Centre(nom, ville);
-        return centres.save(centre);
+    public Centre create(@NonNull String nom, @NonNull String ville) {
+        return centres.save(new Centre(nom, ville));
     }
 
-    public Optional<Centre> get(Long id) {
-        return centres.findCentreById(id);
+    public Optional<Centre> get(@NonNull Long id) {
+        return centres.findById(id);
     }
 
-    public List<Centre> getAllByVille(String ville) {
+    public List<Centre> getAllByVille(@NonNull String ville) {
         return centres.findAllByVille(ville);
     }
 
-    public Optional<Centre> update(Long id, String nom, String ville) {
-        Optional<Centre> centre_opt = get(id);
-        if (centre_opt.isPresent()) {
-            Centre centre = centre_opt.get();
-            if (nom != null)
+    public Optional<Centre> update(@NonNull Long id, String nom, String ville) {
+        return get(id).map(centre -> {
+            if (nom != null) {
                 centre.setNom(nom);
-            if (ville != null)
+            }
+            if (ville != null) {
                 centre.setVille(ville);
-            return Optional.of(centres.save(centre));
-        }
-        return Optional.empty();
+            }
+            return centres.save(centre);
+        });
     }
 
-    public boolean delete(Long id) {
+    public boolean delete(@NonNull Long id) {
         if (centres.existsById(id)) {
             centres.deleteById(id);
             return true;

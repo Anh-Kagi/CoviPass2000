@@ -1,7 +1,7 @@
 package org.polytech.covidapi.service;
 
 import org.polytech.covidapi.model.Account;
-import org.polytech.covidapi.repository.UserRepository;
+import org.polytech.covidapi.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,10 +15,10 @@ import java.util.Optional;
 
 @Service
 public class AuthService implements UserDetailsService {
-    private final UserRepository users;
+    private final AccountRepository users;
 
     @Autowired
-    public AuthService(UserRepository users) {
+    public AuthService(AccountRepository users) {
         this.users = users;
     }
 

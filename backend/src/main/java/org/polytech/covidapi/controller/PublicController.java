@@ -1,5 +1,6 @@
 package org.polytech.covidapi.controller;
 
+import lombok.NonNull;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.CentreService;
@@ -35,8 +36,12 @@ public class PublicController {
     }
 
     @PostMapping("/inscrire/")
-    public ResponseEntity<Optional<Reservation>> inscrire(@RequestParam Long centreId, String nom, String prenom, String mail, long telephone) {
-        Optional<ResponseEntity<Optional<Reservation>>> token = rateLimit.tryConsume();
-        return token.orElseGet(() -> ResponseEntity.ok(reservations.create(centreId, nom, prenom, mail, telephone)));
+    public ResponseEntity<Reservation> inscrire(@RequestParam @NonNull Long centreId,
+                                                @RequestParam @NonNull String nom,
+                                                @RequestParam @NonNull String prenom,
+                                                @RequestParam @NonNull String mail,
+                                                @RequestParam @NonNull Long telephone) {
+        Optional<ResponseEntity<Reservation>> token = rateLimit.tryConsume();
+        return token.orElseGet(() -> ResponseEntity.of(centres.get(centreId).map(centre -> reservations.create(centre, nom, prenom, mail, telephone))));
     }
 }
