@@ -8,32 +8,32 @@ import javax.persistence.*;
 
 @Entity
 public class Reservation {
-    @Id
-    @Getter
-    @Setter(AccessLevel.PROTECTED)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Id
+	@Getter
+	@Setter(AccessLevel.PROTECTED)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @Getter
-    @Setter
-    @ManyToOne
-    private Centre centre;
+	@Getter
+	@Setter
+	@ManyToOne
+	private Centre centre;
 
-    @Getter
-    @Setter
-    @ManyToOne
-    private Patient patient;
+	@Getter
+	@Setter
+	@ManyToOne
+	private Patient patient;
 
-    @Getter
-    @Setter
-    private boolean faite;
+	@Getter
+	@Setter
+	private boolean faite;
 
-    protected Reservation() {
-    }
+	protected Reservation() {
+	}
 
-    public Reservation(Centre centre, Patient patient) {
-        setCentre(centre);
-        setPatient(patient);
-        setFaite(false);
-    }
+	public Reservation(Centre centre, Patient patient) {
+		setCentre(centre);
+		setPatient(patient);
+		setFaite(false);
+	}
 }

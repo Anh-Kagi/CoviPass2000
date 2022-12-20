@@ -10,10 +10,10 @@ import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFacto
 @Profile("dev")
 @Configuration
 public class DatabasePopulator {
-    @Bean
-    public Jackson2RepositoryPopulatorFactoryBean repositoryPopulator() {
-        Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
-        factory.setResources(new Resource[]{new ClassPathResource("data-init.json")});
-        return factory;
-    }
+	@Bean
+	public Jackson2RepositoryPopulatorFactoryBean repositoryPopulator() {
+		Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
+		factory.setResources(new Resource[]{new ClassPathResource("data-init.json")});
+		return factory;
+	}
 }

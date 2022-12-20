@@ -11,10 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
-    List<Patient> findAllByNomOrPrenom(String nom, String prenom);
+	List<Patient> findAllByNomOrPrenom(String nom, String prenom);
 
-    List<Patient> findAllByNomAndPrenom(String nom, String prenom);
+	List<Patient> findAllByNomAndPrenom(String nom, String prenom);
 
-    @Query("SELECT p FROM Patient p WHERE p.nom = :nom AND p.prenom = :prenom AND p.mail = :mail AND p.telephone = :phone")
-    Optional<Patient> findPatient(@Param("nom") String nom, @Param("prenom") String prenom, @Param("mail") String mail, @Param("phone") long telephone);
+	@Query("SELECT p FROM Patient p WHERE p.nom = :nom AND p.prenom = :prenom AND p.mail = :mail AND p.telephone = :phone")
+	Optional<Patient> findPatient(@Param("nom") String nom, @Param("prenom") String prenom, @Param("mail") String mail, @Param("phone") long telephone);
 }

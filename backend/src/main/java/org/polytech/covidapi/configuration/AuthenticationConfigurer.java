@@ -21,35 +21,35 @@ import java.util.Map;
 @EnableWebSecurity
 @Configuration
 public class AuthenticationConfigurer {
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthService auth) throws Exception {
-        http.authorizeHttpRequests()
-                .antMatchers("/admin/super/**").hasRole(Role.SUPER_ADMIN.name())
-                .antMatchers("/admin/simple/**").hasRole(Role.ADMIN.name())
-                .antMatchers("/admin/medecin/**").hasRole(Role.MEDECIN.name())
-                .antMatchers("/admin/**").authenticated()
-                .anyRequest().permitAll()
-                .and().httpBasic(Customizer.withDefaults())
-                .cors().disable()
-                .csrf().disable()  // TODO: enable
-                .userDetailsService(auth)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and()
-                .formLogin().loginProcessingUrl("/login/").usernameParameter("username").passwordParameter("password")
-                .and()
-                .logout().logoutUrl("/logout/").logoutSuccessUrl("/").invalidateHttpSession(true);
-        return http.build();
-    }
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http, AuthService auth) throws Exception {
+		http.authorizeHttpRequests()
+				.antMatchers("/admin/super/**").hasRole(Role.SUPER_ADMIN.name())
+				.antMatchers("/admin/simple/**").hasRole(Role.ADMIN.name())
+				.antMatchers("/admin/medecin/**").hasRole(Role.MEDECIN.name())
+				.antMatchers("/admin/**").authenticated()
+				.anyRequest().permitAll()
+				.and().httpBasic(Customizer.withDefaults())
+				.cors().disable()
+				.csrf().disable()  // TODO: enable
+				.userDetailsService(auth)
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+				.and()
+				.formLogin().loginProcessingUrl("/login/").usernameParameter("username").passwordParameter("password")
+				.and()
+				.logout().logoutUrl("/logout/").logoutSuccessUrl("/").invalidateHttpSession(true);
+		return http.build();
+	}
 
-    @Bean
-    @SuppressWarnings("deprecation")  // ignore NoOpPasswordEncoder deprecation
-    public PasswordEncoder passwordEncoder() {
-        Map<String, PasswordEncoder> encoders = new HashMap<>();
-        encoders.put("bcrypt", new BCryptPasswordEncoder());
-        encoders.put("noop", NoOpPasswordEncoder.getInstance());  // for test purpose only
+	@Bean
+	@SuppressWarnings("deprecation")  // ignore NoOpPasswordEncoder deprecation
+	public PasswordEncoder passwordEncoder() {
+		Map<String, PasswordEncoder> encoders = new HashMap<>();
+		encoders.put("bcrypt", new BCryptPasswordEncoder());
+		encoders.put("noop", NoOpPasswordEncoder.getInstance());  // for test purpose only
 
-        // default password hashing algorithm is bcrypt (spring's current default)
-        // but can validate (and re-hash) password using older hashing algorithm
-        return new DelegatingPasswordEncoder("bcrypt", encoders);
-    }
+		// default password hashing algorithm is bcrypt (spring's current default)
+		// but can validate (and re-hash) password using older hashing algorithm
+		return new DelegatingPasswordEncoder("bcrypt", encoders);
+	}
 }

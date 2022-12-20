@@ -18,30 +18,30 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/public/")
 public class PublicController {
-    private final CentreService centres;
-    private final ReservationService reservations;
-    private final RateLimitService rateLimit;
+	private final CentreService centres;
+	private final ReservationService reservations;
+	private final RateLimitService rateLimit;
 
-    @Autowired
-    public PublicController(CentreService centres, ReservationService reservations, RateLimitService rateLimit) {
-        this.centres = centres;
-        this.reservations = reservations;
-        this.rateLimit = rateLimit;
-    }
+	@Autowired
+	public PublicController(CentreService centres, ReservationService reservations, RateLimitService rateLimit) {
+		this.centres = centres;
+		this.reservations = reservations;
+		this.rateLimit = rateLimit;
+	}
 
-    @GetMapping("/centre/")
-    public ResponseEntity<List<Centre>> rechercherCentre(@RequestParam String ville) {
-        Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
-        return token.orElseGet(() -> ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofHours(1))).body(centres.getAllByVille(ville)));
-    }
+	@GetMapping("/centre/")
+	public ResponseEntity<List<Centre>> rechercherCentre(@RequestParam String ville) {
+		Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
+		return token.orElseGet(() -> ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofHours(1))).body(centres.getAllByVille(ville)));
+	}
 
-    @PostMapping("/inscrire/")
-    public ResponseEntity<Reservation> inscrire(@RequestParam @NonNull Long centreId,
-                                                @RequestParam @NonNull String nom,
-                                                @RequestParam @NonNull String prenom,
-                                                @RequestParam @NonNull String mail,
-                                                @RequestParam @NonNull Long telephone) {
-        Optional<ResponseEntity<Reservation>> token = rateLimit.tryConsume();
-        return token.orElseGet(() -> ResponseEntity.of(centres.get(centreId).map(centre -> reservations.create(centre, nom, prenom, mail, telephone))));
-    }
+	@PostMapping("/inscrire/")
+	public ResponseEntity<Reservation> inscrire(@RequestParam @NonNull Long centreId,
+												@RequestParam @NonNull String nom,
+												@RequestParam @NonNull String prenom,
+												@RequestParam @NonNull String mail,
+												@RequestParam @NonNull Long telephone) {
+		Optional<ResponseEntity<Reservation>> token = rateLimit.tryConsume();
+		return token.orElseGet(() -> ResponseEntity.of(centres.get(centreId).map(centre -> reservations.create(centre, nom, prenom, mail, telephone))));
+	}
 }

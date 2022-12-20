@@ -11,25 +11,25 @@ import javax.persistence.Id;
 
 @Entity
 public class Centre {
-    @Id
-    @Getter
-    @Setter(AccessLevel.PROTECTED)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Id
+	@Getter
+	@Setter(AccessLevel.PROTECTED)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @Getter
-    @Setter
-    private String nom;
+	@Getter
+	@Setter
+	private String nom;
 
-    @Getter
-    @Setter
-    private String ville;
+	@Getter
+	@Setter
+	private String ville;
 
-    public Centre(String nom, String ville) {
-        this.nom = nom;
-        this.ville = ville;
-    }
+	public Centre(String nom, String ville) {
+		this.nom = nom;
+		this.ville = ville;
+	}
 
-    protected Centre() {
-    }
+	protected Centre() {
+	}
 }

@@ -7,8 +7,8 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 @Configuration
 public class EtagConfigurer {
-    @Bean
-    public ShallowEtagHeaderFilter etagFilter() {
-        return new EtagFilter();
-    }
+	@Bean
+	public ShallowEtagHeaderFilter etagFilter() {
+		return new EtagFilter();
+	}
 }

@@ -16,30 +16,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/medecin/")
 public class MedecinController {
-    private final MedecinService medecins;
-    private final PatientService patients;
-    private final ReservationService reservations;
+	private final MedecinService medecins;
+	private final PatientService patients;
+	private final ReservationService reservations;
 
-    @Autowired
-    public MedecinController(MedecinService medecins, PatientService patients, ReservationService reservations) {
-        this.medecins = medecins;
-        this.patients = patients;
-        this.reservations = reservations;
-    }
+	@Autowired
+	public MedecinController(MedecinService medecins, PatientService patients, ReservationService reservations) {
+		this.medecins = medecins;
+		this.patients = patients;
+		this.reservations = reservations;
+	}
 
-    //// Patient
-    @GetMapping("/patient/")
-    public List<Patient> getPatients(@RequestParam(required = false) String nom, @RequestParam(required = false) String prenom) {
-        return patients.getAll(nom, prenom);
-    }
+	//// Patient
+	@GetMapping("/patient/")
+	public List<Patient> getPatients(@RequestParam(required = false) String nom, @RequestParam(required = false) String prenom) {
+		return patients.getAll(nom, prenom);
+	}
 
-    //// Vaccination
-    @PutMapping("/patient/{id}/")
-    public ResponseEntity<Reservation> updatePatient(@NonNull Authentication auth,
-                                                     @PathVariable @NonNull Long id) {
-        return ResponseEntity.of(medecins.get(auth.getName())
-                .flatMap(medecin -> reservations.get(id)
-                        .filter(reservation -> medecins.canAlter(medecin, reservation.getCentre()))
-                        .map(reservations::validate)));
-    }
+	//// Vaccination
+	@PutMapping("/patient/{id}/")
+	public ResponseEntity<Reservation> updatePatient(@NonNull Authentication auth,
+													 @PathVariable @NonNull Long id) {
+		return ResponseEntity.of(medecins.get(auth.getName())
+				.flatMap(medecin -> reservations.get(id)
+						.filter(reservation -> medecins.canAlter(medecin, reservation.getCentre()))
+						.map(reservations::validate)));
+	}
 }

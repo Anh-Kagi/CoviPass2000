@@ -9,18 +9,18 @@ import java.util.List;
 
 @Service
 public class PatientService {
-    private final PatientRepository patients;
+	private final PatientRepository patients;
 
-    @Autowired
-    public PatientService(PatientRepository patients) {
-        this.patients = patients;
-    }
+	@Autowired
+	public PatientService(PatientRepository patients) {
+		this.patients = patients;
+	}
 
-    public List<Patient> getAll(String nom, String prenom) {
-        if (nom != null && prenom != null) {
-            return patients.findAllByNomAndPrenom(nom, prenom);
-        } else {
-            return patients.findAllByNomOrPrenom(nom, prenom);
-        }
-    }
+	public List<Patient> getAll(String nom, String prenom) {
+		if (nom != null && prenom != null) {
+			return patients.findAllByNomAndPrenom(nom, prenom);
+		} else {
+			return patients.findAllByNomOrPrenom(nom, prenom);
+		}
+	}
 }
