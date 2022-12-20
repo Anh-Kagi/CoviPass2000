@@ -11,24 +11,34 @@ import java.util.Optional;
 
 @Service
 public class MedecinService {
-    private final AccountService users;
+	private final AccountService users;
+	private final AdminService admins;
 
-    @Autowired
-    public MedecinService(AccountService users) {
-        this.users = users;
-    }
+	@Autowired
+	public MedecinService(AccountService users, AdminService admins) {
+		this.users = users;
+		this.admins = admins;
+	}
 
-    public Account create(@NonNull String username, @NonNull String password, @NonNull Centre centre) {
-        return users.create(username, password, centre, Role.MEDECIN);
-    }
+	public boolean canAlter(@NonNull Account medecin, @NonNull Centre centre) {
+		return admins.canAlter(medecin, centre) || (medecin.getRole().equals(Role.MEDECIN) && medecin.getCentre().equals(centre));
+	}
 
-    public Optional<Account> get(@NonNull Long id) {
-        return users.find(id, Role.MEDECIN);
-    }
+	public Account create(@NonNull String username, @NonNull String password, @NonNull Centre centre) {
+		return users.create(username, password, centre, Role.MEDECIN);
+	}
 
-    public Optional<Account> update(@NonNull Long id, String username, String password, Centre centre) {
-        if (users.exists(id, Role.MEDECIN))
-            return users.update(id, username, password, centre, null);
-        return Optional.empty();
-    }
+	public Optional<Account> get(@NonNull Long id) {
+		return users.find(id, Role.MEDECIN)
+				.or(() -> admins.get(id));
+	}
+
+	public Optional<Account> get(@NonNull String username) {
+		return users.find(username, Role.MEDECIN)
+				.or(() -> admins.get(username));
+	}
+
+	public Account update(@NonNull Account user, String username, String password, Centre centre) {
+		return users.update(user, username, password, centre, null);
+	}
 }

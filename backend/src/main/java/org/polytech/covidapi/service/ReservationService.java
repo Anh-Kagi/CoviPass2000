@@ -36,18 +36,12 @@ public class ReservationService {
 		return reservations.save(new Reservation(centre, patient));
 	}
 
-	public boolean delete(@NonNull Long id) {
-		if (reservations.existsById(id)) {
-			reservations.deleteById(id);
-			return true;
-		}
-		return false;
+	public void delete(@NonNull Reservation reservation) {
+		reservations.delete(reservation);
 	}
 
-	public Optional<Reservation> validate(@NonNull Long id) {
-		return get(id).map(reservation -> {
-			reservation.setFaite(true);
-			return reservations.save(reservation);
-		});
+	public Reservation validate(@NonNull Reservation reservation) {
+		reservation.setFaite(true);
+		return reservations.save(reservation);
 	}
 }

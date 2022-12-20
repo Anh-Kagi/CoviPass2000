@@ -14,42 +14,40 @@ import java.util.Optional;
 
 @Service
 public class AccountService {
-    public final AccountRepository users;
-    public final CentreRepository centres;
-    public final PasswordEncoder passwordEncoder;
+	public final AccountRepository users;
+	public final CentreRepository centres;
+	public final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public AccountService(AccountRepository users, CentreRepository centres, PasswordEncoder passwordEncoder) {
-        this.users = users;
-        this.centres = centres;
-        this.passwordEncoder = passwordEncoder;
-    }
+	@Autowired
+	public AccountService(AccountRepository users, CentreRepository centres, PasswordEncoder passwordEncoder) {
+		this.users = users;
+		this.centres = centres;
+		this.passwordEncoder = passwordEncoder;
+	}
 
-    public boolean exists(@NonNull Long id, Role role) {
-        return users.existsByIdAndRole(id, role);
-    }
+	public Optional<Account> find(@NonNull Long id, Role role) {
+		return users.findByIdAndRole(id, role);
+	}
 
-    public Optional<Account> find(@NonNull Long id, Role role) {
-        return users.findByIdAndRole(id, role);
-    }
+	public Optional<Account> find(@NonNull String username, Role role) {
+		return users.findByUsernameAndRole(username, role);
+	}
 
-    public Account create(@NonNull String username, @NonNull String password, Centre centre, Role role) {
-        return users.save(new Account(username, passwordEncoder.encode(password), centre, role));
-    }
+	public Account create(@NonNull String username, @NonNull String password, Centre centre, Role role) {
+		return users.save(new Account(username, passwordEncoder.encode(password), centre, role));
+	}
 
-    public Optional<Account> update(@NonNull Long id, String username, String password, Centre centre, Role role) {
-        return users.findById(id).map(user -> {
-            if (username != null)
-                user.setUsername(username);
-            if (password != null)
-                user.setHash(passwordEncoder.encode(password));
-            user.setCentre(centre);
-            user.setRole(role);
-            return users.save(user);
-        });
-    }
+	public Account update(@NonNull Account user, String username, String password, Centre centre, Role role) {
+		if (username != null)
+			user.setUsername(username);
+		if (password != null)
+			user.setHash(passwordEncoder.encode(password));
+		user.setCentre(centre);
+		user.setRole(role);
+		return users.save(user);
+	}
 
-    public void delete(@NonNull Long id) {
-        users.deleteById(id);
-    }
+	public void delete(@NonNull Account user) {
+		users.delete(user);
+	}
 }

@@ -24,9 +24,9 @@ public class AuthenticationConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthService auth) throws Exception {
         http.authorizeHttpRequests()
-                .antMatchers("/admin/super/**").hasRole(Role.SUPER_ADMIN.getName())
-                .antMatchers("/admin/simple/**").hasAnyRole(Role.ADMIN.getName(), Role.SUPER_ADMIN.getName())
-                .antMatchers("/admin/medecin/**").hasAnyRole(Role.MEDECIN.getName(), Role.ADMIN.getName(), Role.SUPER_ADMIN.getName())
+                .antMatchers("/admin/super/**").hasRole(Role.SUPER_ADMIN.name())
+                .antMatchers("/admin/simple/**").hasRole(Role.ADMIN.name())
+                .antMatchers("/admin/medecin/**").hasRole(Role.MEDECIN.name())
                 .antMatchers("/admin/**").authenticated()
                 .anyRequest().permitAll()
                 .and().httpBasic(Customizer.withDefaults())

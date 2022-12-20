@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    Optional<Account> findByUsername(String username);
+	Optional<Account> findByUsername(String username);
 
-    boolean existsByIdAndRole(Long id, Role role);
+	Optional<Account> findByUsernameAndRole(String username, Role role);
 
-    Optional<Account> findByIdAndRole(Long id, Role role);
+	Optional<Account> findByIdAndRole(Long id, Role role);
 }
