@@ -35,9 +35,8 @@ public class AuthenticationConfigurer {
 				.userDetailsService(auth)
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 				.and()
-				.formLogin().loginProcessingUrl("/login/").usernameParameter("username").passwordParameter("password")
-				.and()
-				.logout().logoutUrl("/logout/").logoutSuccessUrl("/").invalidateHttpSession(true);
+				.httpBasic()
+				.realmName("CovidAPI");
 		return http.build();
 	}
 
