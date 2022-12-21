@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 public class EtagFilter extends ShallowEtagHeaderFilter {
-	private final List<String> modMethods = Arrays.asList(HttpMethod.POST.toString(), HttpMethod.PUT.toString(), HttpMethod.DELETE.toString());
+	private final List<String> modMethods = Arrays.asList(/*HttpMethod.POST.toString(), */HttpMethod.PUT.toString(), HttpMethod.DELETE.toString());
 	private final Set<String> cached = new HashSet<>();
 
 	@Override
