@@ -14,20 +14,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class EtagFilter extends ShallowEtagHeaderFilter {
+	private final List<String> statMethods = Arrays.asList(HttpMethod.GET.toString(), HttpMethod.PUT.toString());
 	private final List<String> modMethods = Arrays.asList(/*HttpMethod.POST.toString(), */HttpMethod.PUT.toString(), HttpMethod.DELETE.toString());
-	private final Set<String> cached = new HashSet<>();
+
+	private final Map<String, String> etags = new HashMap<>();
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
 									@NonNull HttpServletResponse response,
 									@NonNull FilterChain chain) throws ServletException, IOException {
+		// get path
+		String path = request.getRequestURI();
+
 		// si method alternative, check etag, error si different
-		if (modMethods.contains(request.getMethod()) && !cached.contains(request.getHeader(HttpHeaders.IF_MATCH))) {
+		if (modMethods.contains(request.getMethod()) && !request.getHeader(HttpHeaders.IF_MATCH).equals(etags.get(path))) {
 			response.sendError(HttpStatus.PRECONDITION_FAILED.value());
 			return;
 		}
@@ -36,14 +41,11 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
 		super.doFilterInternal(request, response, chain);
 
 		// et on update le cache
-		String ifMatch = request.getHeader(HttpHeaders.IF_MATCH);
-		if (Strings.isNotBlank(ifMatch)) {
-			cached.remove(ifMatch);
-		}
-
 		String etag = response.getHeader(HttpHeaders.ETAG);
 		if (Strings.isNotBlank(etag)) {
-			cached.add(etag);
+			etags.replace(path, etag); // new tag (GET/PUT)
+		} else {
+			etags.remove(path); // no tag (DELETE)
 		}
 	}
 
@@ -52,10 +54,7 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
 										@NonNull HttpServletResponse response,
 										int responseStatusCode,
 										@NonNull InputStream inputStream) {
-		if (responseStatusCode >= 200 && responseStatusCode < 300) {
-			String cacheControl = response.getHeader(HttpHeaders.CACHE_CONTROL);
-			return cacheControl == null || !cacheControl.contains("no-store");
-		}
-		return false;
+		// generate an Etag if method shows data and is successful
+		return responseStatusCode >= 200 && responseStatusCode < 300 && statMethods.contains(request.getMethod());
 	}
 }
