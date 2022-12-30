@@ -1,6 +1,7 @@
 package org.polytech.covidapi.controller;
 
 import lombok.NonNull;
+import org.polytech.covidapi.controller.body.ReadPatient;
 import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.MedecinService;
@@ -29,8 +30,8 @@ public class MedecinController {
 
 	//// Patient
 	@GetMapping("/patient/")
-	public List<Patient> getPatients(@RequestParam(required = false) String nom, @RequestParam(required = false) String prenom) {
-		return patients.getAll(nom, prenom);
+	public List<Patient> getPatients(@RequestBody ReadPatient body) {
+		return patients.getAll(body.getNom(), body.getPrenom());
 	}
 
 	//// Vaccination

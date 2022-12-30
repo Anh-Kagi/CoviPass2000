@@ -1,6 +1,7 @@
 package org.polytech.covidapi.controller;
 
-import lombok.NonNull;
+import org.polytech.covidapi.controller.body.Inscription;
+import org.polytech.covidapi.controller.body.ListCentre;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.CentreService;
@@ -30,18 +31,14 @@ public class PublicController {
 	}
 
 	@GetMapping("/centre/")
-	public ResponseEntity<List<Centre>> rechercherCentre(@RequestParam String ville) {
+	public ResponseEntity<List<Centre>> rechercherCentre(@RequestBody ListCentre body) {
 		Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
-		return token.orElseGet(() -> ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofHours(1))).body(centres.getAllByVille(ville)));
+		return token.orElseGet(() -> ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofHours(1))).body(centres.getAllByVille(body.getVille())));
 	}
 
 	@PostMapping("/inscrire/")
-	public ResponseEntity<Reservation> inscrire(@RequestParam @NonNull Long centreId,
-												@RequestParam @NonNull String nom,
-												@RequestParam @NonNull String prenom,
-												@RequestParam @NonNull String mail,
-												@RequestParam @NonNull Long telephone) {
+	public ResponseEntity<Reservation> inscrire(@RequestBody Inscription body) {
 		Optional<ResponseEntity<Reservation>> token = rateLimit.tryConsume();
-		return token.orElseGet(() -> ResponseEntity.of(centres.get(centreId).map(centre -> reservations.create(centre, nom, prenom, mail, telephone))));
+		return token.orElseGet(() -> ResponseEntity.of(centres.get(body.getCentreId()).map(centre -> reservations.create(centre, body.getNom(), body.getPrenom(), body.getMail(), body.getTelephone()))));
 	}
 }

@@ -1,6 +1,9 @@
 package org.polytech.covidapi.controller;
 
 import lombok.NonNull;
+import org.apache.logging.log4j.util.Strings;
+import org.polytech.covidapi.controller.body.CreateMedecin;
+import org.polytech.covidapi.controller.body.UpdateMedecin;
 import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.AdminService;
@@ -33,13 +36,11 @@ public class AdminController {
 	//// Médecins
 	@PostMapping("/medecin/")
 	public ResponseEntity<Account> createMedecin(@NonNull Authentication auth,
-												 @RequestParam @NonNull String username,
-												 @RequestParam @NonNull String password,
-												 @RequestParam @NonNull Long centreId) {
+												 @RequestBody CreateMedecin body) {
 		return ResponseEntity.of(admins.get(auth.getName())
-				.flatMap(admin -> centres.get(centreId)
+				.flatMap(admin -> centres.get(body.getCentre())
 						.filter(centre -> admins.canAlter(admin, centre))
-						.map(centre -> medecins.create(username, password, centre))));
+						.map(centre -> medecins.create(body.getUsername(), body.getPassword(), centre))));
 	}
 
 	@GetMapping("/medecin/{id}/")
@@ -50,15 +51,19 @@ public class AdminController {
 	@PutMapping("/medecin/{id}/")
 	public ResponseEntity<Account> updateMedecin(@NonNull Authentication auth,
 												 @PathVariable @NonNull Long id,
-												 @RequestParam(required = false) String username,
-												 @RequestParam(required = false) String password,
-												 @RequestParam(required = false) Long centreId) {
+												 @RequestBody UpdateMedecin body) {
 		return ResponseEntity.of(admins.get(auth.getName())
 				.flatMap(admin -> medecins.get(id)
 						.filter(medecin -> admins.canAlter(admin, medecin.getCentre()))
-						.flatMap(medecin -> centreId == null ?
-								Optional.of(medecins.update(medecin, username, password, null)) :
-								centres.get(centreId).map(centre -> medecins.update(medecin, username, password, centre))
+						.flatMap(medecin -> body.getCentre() == null ?
+								Optional.of(medecins.update(medecin,
+										Strings.isNotEmpty(body.getUsername()) ? body.getUsername() : null,
+										Strings.isNotEmpty(body.getPassword()) ? body.getPassword() : null,
+										null)) :
+								centres.get(body.getCentre()).map(centre -> medecins.update(medecin,
+										Strings.isNotEmpty(body.getUsername()) ? body.getUsername() : null,
+										Strings.isNotEmpty(body.getPassword()) ? body.getPassword() : null,
+										centre))
 						)));
 	}
 

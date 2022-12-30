@@ -5,7 +5,6 @@ import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Role;
 import org.polytech.covidapi.repository.AccountRepository;
-import org.polytech.covidapi.repository.CentreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,11 @@ import java.util.Optional;
 @Service
 public class AccountService {
 	public final AccountRepository users;
-	public final CentreRepository centres;
 	public final PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public AccountService(AccountRepository users, CentreRepository centres, PasswordEncoder passwordEncoder) {
+	public AccountService(AccountRepository users, PasswordEncoder passwordEncoder) {
 		this.users = users;
-		this.centres = centres;
 		this.passwordEncoder = passwordEncoder;
 	}
 
