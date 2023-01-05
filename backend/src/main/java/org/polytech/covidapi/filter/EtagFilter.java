@@ -31,6 +31,15 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
 		// get path
 		String path = request.getRequestURI();
 
+		// si get, check if-none-match
+		if (HttpMethod.GET.toString().equals(request.getMethod())) {
+			String ifNoneMatch = request.getHeader(HttpHeaders.IF_NONE_MATCH);
+			if (ifNoneMatch != null && ifNoneMatch.equals(etags.get(path))) {
+				response.setStatus(HttpStatus.NOT_MODIFIED.value());
+				return;
+			}
+		}
+
 		// si method alternative, check etag, error si different
 		if (modMethods.contains(request.getMethod()) && !request.getHeader(HttpHeaders.IF_MATCH).equals(etags.get(path))) {
 			response.sendError(HttpStatus.PRECONDITION_FAILED.value());
