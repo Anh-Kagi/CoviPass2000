@@ -14,7 +14,7 @@ public class Centre {
 	@Id
 	@Getter
 	@Setter(AccessLevel.PROTECTED)
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Getter
