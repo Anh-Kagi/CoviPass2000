@@ -1,11 +1,13 @@
 package org.polytech.covidapi.service;
 
+import lombok.NonNull;
 import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -22,5 +24,9 @@ public class PatientService {
 		} else {
 			return patients.findAllByNomOrPrenom(nom, prenom);
 		}
+	}
+
+	public Optional<Patient> get(@NonNull Long id) {
+		return patients.findById(id);
 	}
 }

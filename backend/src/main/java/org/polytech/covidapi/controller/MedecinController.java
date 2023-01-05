@@ -3,6 +3,7 @@ package org.polytech.covidapi.controller;
 import io.micrometer.core.instrument.Metrics;
 import lombok.NonNull;
 import org.polytech.covidapi.controller.body.ReadPatient;
+import org.polytech.covidapi.controller.body.Valider;
 import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.model.Reservation;
@@ -45,15 +46,20 @@ public class MedecinController {
 	//// Vaccination
 	@PatchMapping("/patient/{id}/")
 	public ResponseEntity<Reservation> updatePatient(@NonNull Authentication auth,
-													 @PathVariable @NonNull Long id) {
+													 @PathVariable @NonNull Long id,
+													 @RequestBody Valider body) {
 		Optional<Account> acc_opt = medecins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
 		Account acc = acc_opt.get();
 
-		Optional<Reservation> reservation_opt = reservations.get(id);
-		if (reservation_opt.isEmpty())
+		Optional<Patient> patient_opt = patients.get(id);
+		if (patient_opt.isEmpty())
 			return ResponseEntity.notFound().build();
+
+		Optional<Reservation> reservation_opt = reservations.get(body.getReservation());
+		if (reservation_opt.isEmpty())
+			return ResponseEntity.badRequest().build();
 		Reservation reservation = reservation_opt.get();
 
 		if (!medecins.canAlter(acc, reservation.getCentre()))
