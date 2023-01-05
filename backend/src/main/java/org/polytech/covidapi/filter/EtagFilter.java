@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class EtagFilter extends ShallowEtagHeaderFilter {
 	private final List<String> statMethods = Arrays.asList(HttpMethod.GET.toString(), HttpMethod.PUT.toString());
-	private final List<String> modMethods = Arrays.asList(/*HttpMethod.POST.toString(), */HttpMethod.PUT.toString(), HttpMethod.DELETE.toString());
+	private final List<String> modMethods = Arrays.asList(/*HttpMethod.POST.toString(), */HttpMethod.PUT.toString(), HttpMethod.PATCH.toString(), HttpMethod.DELETE.toString());
 
 	private final Map<String, String> etags = new HashMap<>();
 
