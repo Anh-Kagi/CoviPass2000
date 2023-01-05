@@ -41,9 +41,12 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
 		}
 
 		// si method alternative, check etag, error si different
-		if (modMethods.contains(request.getMethod()) && !request.getHeader(HttpHeaders.IF_MATCH).equals(etags.get(path))) {
-			response.sendError(HttpStatus.PRECONDITION_FAILED.value());
-			return;
+		if (modMethods.contains(request.getMethod())) {
+			String ifMatch = request.getHeader(HttpHeaders.IF_MATCH);
+			if (ifMatch != null && !ifMatch.equals(etags.get(path))) {
+				response.setStatus(HttpStatus.PRECONDITION_FAILED.value());
+				return;
+			}
 		}
 
 		// sinon on s'en remet à parent
