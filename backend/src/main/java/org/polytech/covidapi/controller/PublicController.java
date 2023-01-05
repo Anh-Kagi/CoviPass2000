@@ -1,5 +1,7 @@
 package org.polytech.covidapi.controller;
 
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.prometheus.PrometheusMeterRegistry;
 import org.polytech.covidapi.controller.body.Inscription;
 import org.polytech.covidapi.controller.body.ListCentre;
 import org.polytech.covidapi.model.Centre;
@@ -24,10 +26,12 @@ public class PublicController {
 	private final RateLimitService rateLimit;
 
 	@Autowired
-	public PublicController(CentreService centres, ReservationService reservations, RateLimitService rateLimit) {
+	public PublicController(CentreService centres, ReservationService reservations, RateLimitService rateLimit, PrometheusMeterRegistry registry) {
 		this.centres = centres;
 		this.reservations = reservations;
 		this.rateLimit = rateLimit;
+
+		Metrics.addRegistry(registry);
 	}
 
 	@GetMapping("/centre/")
@@ -48,6 +52,7 @@ public class PublicController {
 			Centre centre = centre_opt.get();
 
 			Reservation reservation = reservations.create(centre, body.getNom(), body.getPrenom(), body.getMail(), body.getTelephone());
+			Metrics.counter("reservations.pending").increment();
 			return ResponseEntity.ok(reservation);
 		});
 	}

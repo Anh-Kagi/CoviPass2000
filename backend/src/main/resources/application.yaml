@@ -18,3 +18,11 @@ spring:
           max-age: 365d
 server:
   port: ${APP_PORT}
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus

@@ -1,5 +1,6 @@
 package org.polytech.covidapi.controller;
 
+import io.micrometer.core.instrument.Metrics;
 import lombok.NonNull;
 import org.polytech.covidapi.controller.body.ReadPatient;
 import org.polytech.covidapi.model.Account;
@@ -60,6 +61,8 @@ public class MedecinController {
 
 		// TODO: multiple vaccination
 		reservation = reservations.validate(reservation);
+		Metrics.counter("reservations.pending").increment(-1);
+		Metrics.counter("reservations.done").increment();
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
 				.body(reservation);
