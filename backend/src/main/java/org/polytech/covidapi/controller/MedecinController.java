@@ -2,17 +2,22 @@ package org.polytech.covidapi.controller;
 
 import lombok.NonNull;
 import org.polytech.covidapi.controller.body.ReadPatient;
+import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.MedecinService;
 import org.polytech.covidapi.service.PatientService;
 import org.polytech.covidapi.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/medecin/")
@@ -30,17 +35,33 @@ public class MedecinController {
 
 	//// Patient
 	@GetMapping("/patient/")
-	public List<Patient> getPatients(@RequestBody ReadPatient body) {
-		return patients.getAll(body.getNom(), body.getPrenom());
+	public ResponseEntity<List<Patient>> getPatients(@RequestBody ReadPatient body) {
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(Duration.ofHours(1)))
+				.body(patients.getAll(body.getNom(), body.getPrenom()));
 	}
 
 	//// Vaccination
-	@PutMapping("/patient/{id}/")
+	@PatchMapping("/patient/{id}/")
 	public ResponseEntity<Reservation> updatePatient(@NonNull Authentication auth,
 													 @PathVariable @NonNull Long id) {
-		return ResponseEntity.of(medecins.get(auth.getName())
-				.flatMap(medecin -> reservations.get(id)
-						.filter(reservation -> medecins.canAlter(medecin, reservation.getCentre()))
-						.map(reservations::validate)));
+		Optional<Account> acc_opt = medecins.get(auth.getName());
+		if (acc_opt.isEmpty())
+			return ResponseEntity.internalServerError().build();
+		Account acc = acc_opt.get();
+
+		Optional<Reservation> reservation_opt = reservations.get(id);
+		if (reservation_opt.isEmpty())
+			return ResponseEntity.notFound().build();
+		Reservation reservation = reservation_opt.get();
+
+		if (!medecins.canAlter(acc, reservation.getCentre()))
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+		// TODO: multiple vaccination
+		reservation = reservations.validate(reservation);
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
+				.body(reservation);
 	}
 }

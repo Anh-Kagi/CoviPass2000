@@ -33,12 +33,22 @@ public class PublicController {
 	@GetMapping("/centre/")
 	public ResponseEntity<List<Centre>> rechercherCentre(@RequestBody ListCentre body) {
 		Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
-		return token.orElseGet(() -> ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofHours(1))).body(centres.getAllByVille(body.getVille())));
+		return token.orElseGet(() -> ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(Duration.ofHours(1)))
+				.body(centres.getAllByVille(body.getVille())));
 	}
 
 	@PostMapping("/inscrire/")
 	public ResponseEntity<Reservation> inscrire(@RequestBody Inscription body) {
 		Optional<ResponseEntity<Reservation>> token = rateLimit.tryConsume();
-		return token.orElseGet(() -> ResponseEntity.of(centres.get(body.getCentreId()).map(centre -> reservations.create(centre, body.getNom(), body.getPrenom(), body.getMail(), body.getTelephone()))));
+		return token.orElseGet(() -> {
+			Optional<Centre> centre_opt = centres.get(body.getCentre());
+			if (centre_opt.isEmpty())
+				return ResponseEntity.badRequest().build();
+			Centre centre = centre_opt.get();
+
+			Reservation reservation = reservations.create(centre, body.getNom(), body.getPrenom(), body.getMail(), body.getTelephone());
+			return ResponseEntity.ok(reservation);
+		});
 	}
 }

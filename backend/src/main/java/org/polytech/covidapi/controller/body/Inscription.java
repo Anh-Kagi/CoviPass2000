@@ -6,9 +6,9 @@ import lombok.Setter;
 
 public class Inscription {
 	@Getter
-	@Setter
-	@NonNull
-	private Long centreId;
+    @Setter
+    @NonNull
+    private Long centre;
 
 	@Getter
 	@Setter
