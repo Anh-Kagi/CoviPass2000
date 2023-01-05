@@ -52,7 +52,7 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
 		// et on update le cache
 		String etag = response.getHeader(HttpHeaders.ETAG);
 		if (Strings.isNotBlank(etag)) {
-			etags.replace(path, etag); // new tag (GET/PUT)
+			etags.put(path, etag); // new tag (GET/PUT)
 		} else {
 			etags.remove(path); // no tag (DELETE)
 		}
