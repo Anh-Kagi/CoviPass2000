@@ -21,7 +21,7 @@ public class MedecinService {
 	}
 
 	public boolean canAlter(@NonNull Account medecin, @NonNull Centre centre) {
-		return admins.canAlter(medecin, centre) || (medecin.getRole().equals(Role.MEDECIN) && medecin.getCentre().equals(centre));
+		return admins.canAlter(medecin, centre) || (medecin.getRole().equals(Role.MEDECIN) && medecin.getCentre().getId().equals(centre.getId()));
 	}
 
 	public Account create(@NonNull String username, @NonNull String password, @NonNull Centre centre) {
