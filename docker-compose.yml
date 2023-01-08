@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    build: backend
+    build: .
     restart: unless-stopped
     command: "--spring.profiles.active=dev"
     ports:
