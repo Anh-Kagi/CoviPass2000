@@ -37,7 +37,7 @@ public class PublicController {
 	public ResponseEntity<List<Centre>> rechercherCentre(@RequestParam String ville) {
 		Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
 		return token.orElseGet(() -> ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(Duration.ofHours(1)))
+				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
 				.body(centres.getAllByVille(ville)));
 	}
 

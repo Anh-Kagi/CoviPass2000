@@ -27,10 +27,10 @@ public class ReservationService {
 	}
 
 	public Reservation create(@NonNull Centre centre,
-							  @NonNull String nom,
-							  @NonNull String prenom,
-							  @NonNull String mail,
-							  @NonNull Long telephone) {
+	                          @NonNull String nom,
+	                          @NonNull String prenom,
+	                          @NonNull String mail,
+	                          @NonNull Long telephone) {
 		Patient patient = patients.findPatient(nom, prenom, mail, telephone)
 				.orElse(patients.save(new Patient(nom, prenom, mail, telephone)));
 		return reservations.save(new Reservation(centre, patient));

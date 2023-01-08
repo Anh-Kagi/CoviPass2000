@@ -39,15 +39,15 @@ public class MedecinController {
 	@GetMapping("/patient/")
 	public ResponseEntity<List<Patient>> getPatients(@RequestBody ReadPatient body) {
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(Duration.ofHours(1)))
+				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
 				.body(patients.getAll(body.getNom(), body.getPrenom()));
 	}
 
 	//// Vaccination
 	@PatchMapping("/patient/{id}/")
 	public ResponseEntity<Reservation> updatePatient(@NonNull Authentication auth,
-													 @PathVariable @NonNull Long id,
-													 @RequestBody Valider body) {
+	                                                 @PathVariable @NonNull Long id,
+	                                                 @RequestBody Valider body) {
 		Optional<Account> acc_opt = medecins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
@@ -70,7 +70,7 @@ public class MedecinController {
 		Metrics.counter("reservations.pending").increment(-1);
 		Metrics.counter("reservations.done").increment();
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
+				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
 				.body(reservation);
 	}
 }

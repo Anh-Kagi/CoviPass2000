@@ -26,8 +26,8 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
-									@NonNull HttpServletResponse response,
-									@NonNull FilterChain chain) throws ServletException, IOException {
+	                                @NonNull HttpServletResponse response,
+	                                @NonNull FilterChain chain) throws ServletException, IOException {
 		// get path
 		String path = request.getRequestURI();
 
@@ -63,9 +63,9 @@ public class EtagFilter extends ShallowEtagHeaderFilter {
 
 	@Override
 	protected boolean isEligibleForEtag(@NonNull HttpServletRequest request,
-										@NonNull HttpServletResponse response,
-										int responseStatusCode,
-										@NonNull InputStream inputStream) {
+	                                    @NonNull HttpServletResponse response,
+	                                    int responseStatusCode,
+	                                    @NonNull InputStream inputStream) {
 		// generate an Etag if method shows data and is successful
 		return responseStatusCode >= 200 && responseStatusCode < 300 && statMethods.contains(request.getMethod());
 	}

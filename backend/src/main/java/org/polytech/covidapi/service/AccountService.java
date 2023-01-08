@@ -35,15 +35,15 @@ public class AccountService {
 	}
 
 	public Account update(@NonNull Account user, String username, String password, Centre centre, Role role) {
-        if (username != null)
-            user.setUsername(username);
-        if (password != null)
-            user.setHash(passwordEncoder.encode(password));
-        user.setCentre(centre);
-        if (role != null)
-            user.setRole(role);
-        return users.save(user);
-    }
+		if (username != null)
+			user.setUsername(username);
+		if (password != null)
+			user.setHash(passwordEncoder.encode(password));
+		user.setCentre(centre);
+		if (role != null)
+			user.setRole(role);
+		return users.save(user);
+	}
 
 	public void delete(@NonNull Account user) {
 		users.delete(user);

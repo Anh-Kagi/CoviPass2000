@@ -45,19 +45,19 @@ public class SuperAdminController {
 		Centre centre = centre_opt.get();
 
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
+				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
 				.body(centre);
 	}
 
 	@PutMapping("/centre/{id}/")
 	public ResponseEntity<Centre> updateCentre(@PathVariable @NonNull Long id,
-											   @RequestBody UpdateCentre body) {
+	                                           @RequestBody UpdateCentre body) {
 		Optional<Centre> centre_opt = centres.get(id);
 		if (centre_opt.isEmpty())
 			return ResponseEntity.notFound().build();
 		Centre centre = centres.update(centre_opt.get(), body.getNom(), body.getVille(), body.getAdresse());
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
+				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
 				.body(centre);
 	}
 
@@ -87,7 +87,7 @@ public class SuperAdminController {
 	public ResponseEntity<Account> readAdmin(@PathVariable Long id) {
 		Optional<Account> admin_opt = admins.get(id);
 		return admin_opt.map(account -> ResponseEntity.ok()
-						.cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
+						.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
 						.body(account))
 				.orElseGet(() -> ResponseEntity.notFound()
 						.build());
@@ -95,7 +95,7 @@ public class SuperAdminController {
 
 	@PutMapping("/admin/{id}/")
 	public ResponseEntity<Account> updateAdmin(@PathVariable @NonNull Long id,
-											   @RequestBody UpdateAdmin body) {
+	                                           @RequestBody UpdateAdmin body) {
 		Optional<Account> admin_opt = admins.get(id);
 		if (admin_opt.isEmpty())
 			return ResponseEntity.notFound().build();
@@ -103,7 +103,6 @@ public class SuperAdminController {
 		Account admin;
 		if (body.getCentre() == null) {
 			admin = admins.update(admin_opt.get(), body.getUsername(), body.getPassword(), null);
-			return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofDays(1))).body(admin);
 		} else {
 			Optional<Centre> centre_opt = centres.get(body.getCentre());
 			if (centre_opt.isEmpty())
@@ -111,7 +110,7 @@ public class SuperAdminController {
 
 			admin = admins.update(admin_opt.get(), body.getUsername(), body.getPassword(), centre_opt.get());
 		}
-		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofDays(1))).body(admin);
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate()).body(admin);
 	}
 
 	@DeleteMapping("/admin/{id}/")
