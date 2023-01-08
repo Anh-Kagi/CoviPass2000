@@ -18,8 +18,8 @@ public class CentreService {
 		this.centres = centres;
 	}
 
-	public Centre create(@NonNull String nom, @NonNull String ville) {
-		return centres.save(new Centre(nom, ville));
+	public Centre create(@NonNull String nom, @NonNull String ville, @NonNull String adresse) {
+		return centres.save(new Centre(nom, ville, adresse));
 	}
 
 	public Optional<Centre> get(@NonNull Long id) {
@@ -30,12 +30,15 @@ public class CentreService {
 		return centres.findAllByVille(ville);
 	}
 
-	public Centre update(@NonNull Centre centre, String nom, String ville) {
+	public Centre update(@NonNull Centre centre, String nom, String ville, String adresse) {
 		if (nom != null) {
 			centre.setNom(nom);
 		}
 		if (ville != null) {
 			centre.setVille(ville);
+		}
+		if (adresse != null) {
+			centre.setAdresse(adresse);
 		}
 		return centres.save(centre);
 	}

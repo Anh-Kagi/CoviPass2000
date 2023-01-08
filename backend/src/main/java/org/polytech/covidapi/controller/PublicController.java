@@ -3,7 +3,6 @@ package org.polytech.covidapi.controller;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import org.polytech.covidapi.controller.body.Inscription;
-import org.polytech.covidapi.controller.body.ListCentre;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.service.CentreService;
@@ -35,11 +34,11 @@ public class PublicController {
 	}
 
 	@GetMapping("/centre/")
-	public ResponseEntity<List<Centre>> rechercherCentre(@RequestBody ListCentre body) {
+	public ResponseEntity<List<Centre>> rechercherCentre(@RequestParam String ville) {
 		Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
 		return token.orElseGet(() -> ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(Duration.ofHours(1)))
-				.body(centres.getAllByVille(body.getVille())));
+				.body(centres.getAllByVille(ville)));
 	}
 
 	@PostMapping("/inscrire/")

@@ -33,7 +33,7 @@ public class SuperAdminController {
 	//// Centres
 	@PostMapping("/centre/")
 	public ResponseEntity<Centre> createCentre(@RequestBody CreateCentre body, UriComponentsBuilder builder) {
-		Centre centre = centres.create(body.getNom(), body.getVille());
+		Centre centre = centres.create(body.getNom(), body.getVille(), body.getAdresse());
 		return ResponseEntity.created(builder.path("/admin/super/centre/{id}/").buildAndExpand(centre.getId()).toUri()).build();
 	}
 
@@ -55,7 +55,7 @@ public class SuperAdminController {
 		Optional<Centre> centre_opt = centres.get(id);
 		if (centre_opt.isEmpty())
 			return ResponseEntity.notFound().build();
-		Centre centre = centres.update(centre_opt.get(), body.getNom(), body.getVille());
+		Centre centre = centres.update(centre_opt.get(), body.getNom(), body.getVille(), body.getAdresse());
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
 				.body(centre);

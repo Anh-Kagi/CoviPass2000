@@ -11,5 +11,9 @@ public class UpdateCentre {
 	@Getter
 	@Setter
 	private String ville;
+
+	@Getter
+	@Setter
+	private String adresse;
 }
 

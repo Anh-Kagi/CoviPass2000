@@ -25,9 +25,14 @@ public class Centre {
 	@Setter
 	private String ville;
 
-	public Centre(String nom, String ville) {
+	@Getter
+	@Setter
+	private String adresse;
+
+	public Centre(String nom, String ville, String adresse) {
 		this.nom = nom;
 		this.ville = ville;
+		this.adresse = adresse;
 	}
 
 	protected Centre() {

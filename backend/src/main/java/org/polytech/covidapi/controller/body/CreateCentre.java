@@ -14,4 +14,9 @@ public class CreateCentre {
 	@Setter
 	@NonNull
 	private String ville;
+
+	@Getter
+	@Setter
+	@NonNull
+	private String adresse;
 }
