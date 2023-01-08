@@ -1,34 +1,23 @@
 <header>
-    <div class="card"> 
-        <div class="card-header">
-            
-        </div>    
-            <div class="card-body">
-                {{titre}}
-            </div>
-    </div>
+	<div class="card">
+		<div class="card-header">
+		</div>
+		<div class="card-body">
+			{{titre}}
+		</div>
+	</div>
 </header>
 
-
-
 <nav class="nav navbar-expand navbar-light bg-light">
-    <ul class="nav nav-pills">
-    
-    <li class="d-flex flex-row">
-        <a class="nav-link" [routerLink] = "['home']" >Accueil</a>
-        <a class="nav-link" [routerLink] = "['listeCentres']" >Liste des centres</a>
-        <a class="nav-link"  [routerLink] = "['NotFound']" ></a>
-
-       
-    </li>
-  
-
-    </ul>
-
-
-
-
+	<ul class="nav nav-pills">
+		<li class="d-flex flex-row">
+			<a [routerLink]="['home']" class="nav-link">Accueil</a>
+			<a [routerLink]="['listeCentres']" class="nav-link">Liste des centres</a>
+			<a [routerLink]="['NotFound']" class="nav-link"></a>
+		</li>
+	</ul>
 </nav>
+
 <div class="container">
     <router-outlet></router-outlet>
 </div>
