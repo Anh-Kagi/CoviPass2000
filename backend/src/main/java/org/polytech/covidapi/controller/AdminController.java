@@ -40,8 +40,8 @@ public class AdminController {
 	//// Médecins
 	@PostMapping("/medecin/")
 	public ResponseEntity<Account> createMedecin(@NonNull Authentication auth,
-												 @RequestBody CreateMedecin body,
-												 UriComponentsBuilder builder) {
+	                                             @RequestBody CreateMedecin body,
+	                                             UriComponentsBuilder builder) {
 		Optional<Account> acc_opt = admins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
@@ -63,7 +63,7 @@ public class AdminController {
 	public ResponseEntity<Account> readMedecin(@PathVariable @NonNull Long id) {
 		Optional<Account> medecin = medecins.get(id);
 		return medecin.map(account -> ResponseEntity.ok()
-						.cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
+						.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
 						.body(account))
 				.orElseGet(() -> ResponseEntity.notFound()
 						.build());
@@ -71,8 +71,8 @@ public class AdminController {
 
 	@PutMapping("/medecin/{id}/")
 	public ResponseEntity<Account> updateMedecin(@NonNull Authentication auth,
-												 @PathVariable @NonNull Long id,
-												 @RequestBody UpdateMedecin body) {
+	                                             @PathVariable @NonNull Long id,
+	                                             @RequestBody UpdateMedecin body) {
 		Optional<Account> acc_opt = admins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
@@ -97,7 +97,7 @@ public class AdminController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
 		medecin = medecins.update(medecin_opt.get(), body.getUsername(), body.getPassword(), centre);
-		return ResponseEntity.ok().body(medecin);
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate()).body(medecin);
 	}
 
 	//// Reservations
@@ -105,7 +105,7 @@ public class AdminController {
 	public ResponseEntity<Reservation> readReservation(@PathVariable @NonNull Long id) {
 		Optional<Reservation> reservation = reservations.get(id);
 		return reservation.map(value -> ResponseEntity.ok()
-						.cacheControl(CacheControl.maxAge(Duration.ofHours(1)))
+						.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
 						.body(value))
 				.orElseGet(() -> ResponseEntity.notFound()
 						.build());
@@ -113,7 +113,7 @@ public class AdminController {
 
 	@DeleteMapping("/reservation/{id}/")
 	public ResponseEntity<Reservation> deleteReservation(@NonNull Authentication auth,
-														 @PathVariable @NonNull Long id) {
+	                                                     @PathVariable @NonNull Long id) {
 		Optional<Account> acc_opt = admins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
