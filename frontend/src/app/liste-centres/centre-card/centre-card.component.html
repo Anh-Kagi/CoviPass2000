@@ -1,9 +1,9 @@
-<div class="d-flex flex-row border justify-content-center">
-	<div class="p-3 d-flex flex-column align-items-center">
-		<h3>{{nom}}</h3>
-		<p>{{adresse}}, {{ville}}</p>
-	</div>
-	<div class="p-3 d-flex flex-row align-items-center">
-		<button (click)="openModal()" class="btn btn-primary" type="button">Réserver</button>
-	</div>
-</div>
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>{{nom}}</mat-card-title>
+		<mat-card-subtitle>{{adresse}}, {{ville}}</mat-card-subtitle>
+	</mat-card-header>
+	<mat-card-actions align="end">
+		<button (click)="openModal()" color="primary" mat-raised-button>Réserver</button>
+	</mat-card-actions>
+</mat-card>

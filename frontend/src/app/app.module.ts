@@ -19,6 +19,13 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dia
 import {MatInputModule} from "@angular/material/input";
 import {ModalSuccessComponent} from './liste-centres/modal-success/modal-success.component';
 import {ModalFailureComponent} from './liste-centres/modal-failure/modal-failure.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatListModule} from "@angular/material/list";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatCardModule} from "@angular/material/card";
 
 
 @NgModule({
@@ -43,10 +50,17 @@ import {ModalFailureComponent} from './liste-centres/modal-failure/modal-failure
 		ReactiveFormsModule,
 		BrowserAnimationsModule,
 		MatDialogModule,
-		MatInputModule
+		MatInputModule,
+		MatToolbarModule,
+		MatIconModule,
+		MatButtonModule,
+		MatListModule,
+		MatGridListModule,
+		MatSidenavModule,
+		MatCardModule
 	],
 	providers: [
-		{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+		{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},
 	],
 	bootstrap: [AppComponent]
 })

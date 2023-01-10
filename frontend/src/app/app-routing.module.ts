@@ -8,15 +8,15 @@ import {NotFoundComponent} from "./not-found/not-found.component";
 
 const routes: Routes = [
 
-	{path: 'home', component: HomeComponent},
-	{path: 'listeCentres', component: ListeCentresComponent},
+	{path: '', component: HomeComponent},
+	{path: 'centres', component: ListeCentresComponent},
 
 	{
-		path: 'adminHome',
+		path: 'admin',
 		component: AdminHomeComponent,
 		children: [
 			{
-				path: 'Centres', component: AdminCentresComponent
+				path: 'centres', component: AdminCentresComponent
 			}
 
 		]
