@@ -31,9 +31,9 @@ public class Patient {
 
 	@Getter
 	@Setter
-	private long telephone;
+	private String telephone;
 
-	public Patient(String nom, String prenom, String mail, long telephone) {
+	public Patient(String nom, String prenom, String mail, String telephone) {
 		setNom(nom);
 		setPrenom(prenom);
 		setMail(mail);

@@ -40,8 +40,8 @@ public class AdminController {
 	//// Médecins
 	@PostMapping("/medecin/")
 	public ResponseEntity<Account> createMedecin(@NonNull Authentication auth,
-	                                             @RequestBody CreateMedecin body,
-	                                             UriComponentsBuilder builder) {
+												 @RequestBody CreateMedecin body,
+												 UriComponentsBuilder builder) {
 		Optional<Account> acc_opt = admins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
@@ -71,8 +71,8 @@ public class AdminController {
 
 	@PutMapping("/medecin/{id}/")
 	public ResponseEntity<Account> updateMedecin(@NonNull Authentication auth,
-	                                             @PathVariable @NonNull Long id,
-	                                             @RequestBody UpdateMedecin body) {
+												 @PathVariable @NonNull Long id,
+												 @RequestBody UpdateMedecin body) {
 		Optional<Account> acc_opt = admins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
@@ -113,7 +113,7 @@ public class AdminController {
 
 	@DeleteMapping("/reservation/{id}/")
 	public ResponseEntity<Reservation> deleteReservation(@NonNull Authentication auth,
-	                                                     @PathVariable @NonNull Long id) {
+														 @PathVariable @NonNull Long id) {
 		Optional<Account> acc_opt = admins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();

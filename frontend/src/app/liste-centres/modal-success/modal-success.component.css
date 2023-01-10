@@ -1,0 +1,63 @@
+.check-success {
+	width: 20vh;
+	height: 20vh;
+	position: relative;
+}
+
+.circle {
+	position: absolute;
+	top: 5%;
+	left: 5%;
+	margin: 0;
+	width: 90%;
+	height: 90%;
+	border: 0.3em solid limegreen;
+	border-radius: 50%;
+}
+
+.line-short {
+	position: absolute;
+	height: 0.3em;
+	width: 35%;
+	background-color: limegreen;
+	top: 55%;
+	left: 15%;
+	transform-origin: left center;
+	transform: rotate(45deg);
+	animation: line-short 0.75s;
+	border-radius: 1em;
+}
+
+.line-long {
+	position: absolute;
+	height: 0.3em;
+	width: 65%;
+	background-color: limegreen;
+	top: 80%;
+	left: 38%;
+	transform-origin: left center;
+	transform: rotate(-45deg);
+	animation: line-long 0.75s;
+	border-radius: 1em;
+}
+
+@keyframes line-short {
+	0% {
+		width: 0;
+	}
+	25% {
+		width: 35%;
+	}
+}
+
+@keyframes line-long {
+	0% {
+		width: 0;
+	}
+	25% {
+		width: 0;
+	}
+	100% {
+		width: 65%;
+	}
+}

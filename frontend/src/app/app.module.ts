@@ -13,6 +13,12 @@ import {AppRoutingModule} from './app-routing.module';
 import {CentreCardComponent} from './liste-centres/centre-card/centre-card.component';
 import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from "@angular/forms";
+import {ModalInscriptionComponent} from './liste-centres/modal-inscription/modal-inscription.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
+import {MatInputModule} from "@angular/material/input";
+import {ModalSuccessComponent} from './liste-centres/modal-success/modal-success.component';
+import {ModalFailureComponent} from './liste-centres/modal-failure/modal-failure.component';
 
 
 @NgModule({
@@ -25,15 +31,23 @@ import {ReactiveFormsModule} from "@angular/forms";
 		AdminHomeComponent,
 		AdminCentresComponent,
 		CentreCardComponent,
+		ModalInscriptionComponent,
+		ModalSuccessComponent,
+		ModalFailureComponent,
 	],
 	imports: [
 		BrowserModule,
 		NgbModule,
 		AppRoutingModule,
 		HttpClientModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		BrowserAnimationsModule,
+		MatDialogModule,
+		MatInputModule
 	],
-	providers: [],
+	providers: [
+		{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

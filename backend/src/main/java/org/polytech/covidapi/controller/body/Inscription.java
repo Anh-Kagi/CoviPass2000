@@ -28,5 +28,5 @@ public class Inscription {
 	@Getter
 	@Setter
 	@NonNull
-	private Long telephone;
+	private String telephone;
 }

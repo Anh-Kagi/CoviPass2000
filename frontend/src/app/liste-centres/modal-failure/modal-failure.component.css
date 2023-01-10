@@ -1,0 +1,62 @@
+.check-success {
+	width: 10vh;
+	height: 10vh;
+	position: relative;
+}
+
+.circle {
+	position: absolute;
+	top: 5%;
+	left: 5%;
+	margin: 0;
+	width: 90%;
+	height: 90%;
+	border: 0.3em solid red;
+	border-radius: 50%;
+}
+
+.line {
+	position: absolute;
+	height: 0.3em;
+	width: 68%;
+	background-color: red;
+	border-radius: 1em;
+	transform-origin: left center;
+	top: 25%;
+}
+
+.line:nth-child(2) {
+	transform: rotate(45deg);
+	animation: line-first 0.75s;
+	left: 25%;
+}
+
+.line:nth-child(3) {
+	transform: rotate(135deg);
+	animation: line-second 0.75s;
+	left: 75%;
+}
+
+@keyframes line-first {
+	0% {
+		width: 0%;
+	}
+	50% {
+		width: 68%;
+	}
+	100% {
+		width: 68%;
+	}
+}
+
+@keyframes line-second {
+	0% {
+		width: 0%;
+	}
+	50% {
+		width: 0%;
+	}
+	100% {
+		width: 68%;
+	}
+}

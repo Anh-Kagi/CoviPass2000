@@ -51,7 +51,7 @@ public class SuperAdminController {
 
 	@PutMapping("/centre/{id}/")
 	public ResponseEntity<Centre> updateCentre(@PathVariable @NonNull Long id,
-	                                           @RequestBody UpdateCentre body) {
+											   @RequestBody UpdateCentre body) {
 		Optional<Centre> centre_opt = centres.get(id);
 		if (centre_opt.isEmpty())
 			return ResponseEntity.notFound().build();
@@ -95,7 +95,7 @@ public class SuperAdminController {
 
 	@PutMapping("/admin/{id}/")
 	public ResponseEntity<Account> updateAdmin(@PathVariable @NonNull Long id,
-	                                           @RequestBody UpdateAdmin body) {
+											   @RequestBody UpdateAdmin body) {
 		Optional<Account> admin_opt = admins.get(id);
 		if (admin_opt.isEmpty())
 			return ResponseEntity.notFound().build();

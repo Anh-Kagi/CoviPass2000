@@ -14,7 +14,8 @@
 
 	<ng-container *ngIf="centres.length > 0">
 		<div *ngFor="let centre of centres" class="d-flex flex-column align-content-center list-group p-5">
-			<app-centre-card [adresse]="centre.adresse" [nom]="centre.nom" [ville]="centre.ville"></app-centre-card>
+			<app-centre-card [adresse]="centre.adresse" [id]="centre.id" [nom]="centre.nom"
+							 [ville]="centre.ville"></app-centre-card>
 		</div>
 	</ng-container>
 

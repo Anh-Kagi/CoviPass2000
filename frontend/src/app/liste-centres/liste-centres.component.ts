@@ -26,14 +26,12 @@ export class ListeCentresComponent implements OnInit {
 	}
 
 	protected listCentre() {
-		console.log(this.searchForm.value);
 		let ville = this.searchForm.value.ville;
 		if (ville === null || ville === undefined) {
 			return;
 		}
 		this.service.listCentre(ville.trim()).subscribe((data: Centre[]) => {
 			this.centres = data;
-			console.log(this.centres);
 		});
 	}
 }

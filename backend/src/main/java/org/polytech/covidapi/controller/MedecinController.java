@@ -46,8 +46,8 @@ public class MedecinController {
 	//// Vaccination
 	@PatchMapping("/patient/{id}/")
 	public ResponseEntity<Reservation> updatePatient(@NonNull Authentication auth,
-	                                                 @PathVariable @NonNull Long id,
-	                                                 @RequestBody Valider body) {
+													 @PathVariable @NonNull Long id,
+													 @RequestBody Valider body) {
 		Optional<Account> acc_opt = medecins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();

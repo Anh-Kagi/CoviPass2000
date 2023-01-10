@@ -25,4 +25,15 @@ export class PublicService {
 				responseType: "json",
 			});
 	}
+
+	public inscrire(centre: number, nom: string, prenom: string, mail: string, telephone: string) {
+		let data = {
+			centre: centre,
+			nom: nom,
+			prenom: prenom,
+			mail: mail,
+			telephone: telephone
+		};
+		return this.http.post("/public/inscrire/", data);
+	}
 }
