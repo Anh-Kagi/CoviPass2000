@@ -1,5 +1,5 @@
 import {Component, Injectable, OnInit} from '@angular/core';
-import {Centre, PublicService} from "../services/public/public.service";
+import {Centre, PublicService} from "../../services/public/public.service";
 import {FormBuilder} from "@angular/forms";
 
 @Injectable()

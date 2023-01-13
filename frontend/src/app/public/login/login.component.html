@@ -1,0 +1,25 @@
+<div class="d-flex flex-column justify-content-center" style="height: 200px;">
+	<img class="imageDeFond mx-auto" src="../../../assets/images/covidapi.png">
+</div>
+
+
+<div class="d-flex flex-row justify-content-center align-items-center">
+	<form (ngSubmit)="login()" [formGroup]="form" class="d-flex flex-column">
+		<mat-form-field appearance="fill">
+			<mat-label>Nom d'utilisateur</mat-label>
+			<input formControlName="username" matInput placeholder="user" type="text"/>
+		</mat-form-field>
+
+		<mat-form-field appearance="fill">
+			<mat-label>Mot de passe</mat-label>
+			<input [type]="visiblePassword ? 'text' : 'password'" formControlName="password" matInput
+				   placeholder="motdepasse"/>
+			<button (click)="togglePasswordVisibility()" mat-icon-button matSuffix type="button">
+				<mat-icon>{{visiblePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+			</button>
+		</mat-form-field>
+
+		<button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Connection</button>
+	</form>
+</div>
+

@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {PublicService} from "../../services/public/public.service";
+import {PublicService} from "../../../services/public/public.service";
 import {catchError, throwError} from "rxjs";
-import {ModalFailureComponent} from "../modal-failure/modal-failure.component";
+import {ModalFailureComponent} from "../../../dialog/modal-failure/modal-failure.component";
 
 @Component({
 	selector: 'app-modal-inscription',

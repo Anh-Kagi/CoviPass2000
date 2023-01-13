@@ -1,0 +1,30 @@
+<body>
+
+<div class="justify-content-center" style="height: 500px;">
+	<div class="p-5">
+		<form (ngSubmit)="onSubmit()" [formGroup]="searchForm" action="">
+			<label for="ville">Trouver un centre de vaccination</label>
+			<div class="d-flex flex-row">
+				<input class="form-control" formControlName="ville" id="ville" placeholder="Ville"
+					   type="text">
+				<input class="btn btn-primary" type="submit" value="Rechercher">
+			</div>
+		</form>
+	</div>
+
+	<ng-container *ngIf="centres.length > 0">
+		<div *ngFor="let centre of centres" class="d-flex flex-column align-content-center list-group p-5">
+			<app-centre-card [adresse]="centre.adresse" [id]="centre.id" [nom]="centre.nom"
+							 [ville]="centre.ville"></app-centre-card>
+		</div>
+	</ng-container>
+
+	<ng-container *ngIf="centres.length == 0">
+		<div class="d-flex flex-column p-5">
+			<h3 class="text-center">Aucun centre trouvé</h3>
+		</div>
+	</ng-container>
+
+</div>
+
+</body>

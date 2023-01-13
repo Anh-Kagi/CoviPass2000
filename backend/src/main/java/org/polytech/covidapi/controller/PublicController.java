@@ -5,12 +5,16 @@ import io.micrometer.prometheus.PrometheusMeterRegistry;
 import org.polytech.covidapi.controller.body.Inscription;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Reservation;
+import org.polytech.covidapi.model.Role;
+import org.polytech.covidapi.service.AccountService;
 import org.polytech.covidapi.service.CentreService;
 import org.polytech.covidapi.service.RateLimitService;
 import org.polytech.covidapi.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -23,12 +27,18 @@ public class PublicController {
 	private final CentreService centres;
 	private final ReservationService reservations;
 	private final RateLimitService rateLimit;
+	private final AccountService accounts;
 
 	@Autowired
-	public PublicController(CentreService centres, ReservationService reservations, RateLimitService rateLimit, PrometheusMeterRegistry registry) {
+	public PublicController(CentreService centres,
+	                        ReservationService reservations,
+	                        RateLimitService rateLimit,
+	                        PrometheusMeterRegistry registry,
+	                        AccountService accounts) {
 		this.centres = centres;
 		this.reservations = reservations;
 		this.rateLimit = rateLimit;
+		this.accounts = accounts;
 
 		Metrics.addRegistry(registry);
 	}
@@ -54,5 +64,19 @@ public class PublicController {
 			Metrics.counter("reservations.pending").increment();
 			return ResponseEntity.ok(reservation);
 		});
+	}
+
+	@GetMapping("/arthur/") // TODO: private joke
+	public ResponseEntity<Role> arthur(Authentication authentication) {
+		return ResponseEntity.ok(Optional.ofNullable(authentication)
+				.flatMap(auth -> accounts.find(auth.getName()))
+				.map(account -> account.getRole())
+				.orElse(null));
+	}
+
+	@GetMapping(value = "/arthur/", params = {"logout"})
+	public ResponseEntity<Role> arthur(SecurityContextHolder context) {
+		context.clearContext();
+		return ResponseEntity.ok(null);
 	}
 }

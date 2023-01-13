@@ -22,7 +22,7 @@ import java.time.Duration;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/admin/simple/")
+@RequestMapping("/private/admin/")
 public class AdminController {
 	private final AdminService admins;
 	private final CentreService centres;

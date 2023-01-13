@@ -16,4 +16,5 @@ export class ModalFailureComponent implements OnInit {
 			this.dialog.close();
 		}, 5 * 1000);
 	}
+
 }

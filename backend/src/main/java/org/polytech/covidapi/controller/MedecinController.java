@@ -3,7 +3,6 @@ package org.polytech.covidapi.controller;
 import io.micrometer.core.instrument.Metrics;
 import lombok.NonNull;
 import org.polytech.covidapi.controller.body.ReadPatient;
-import org.polytech.covidapi.controller.body.Valider;
 import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.model.Reservation;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/admin/medecin/")
+@RequestMapping("/private/medecin/")
 public class MedecinController {
 	private final MedecinService medecins;
 	private final PatientService patients;
@@ -43,21 +42,23 @@ public class MedecinController {
 				.body(patients.getAll(body.getNom(), body.getPrenom()));
 	}
 
+	@GetMapping("/patient/{id}/reservations/")
+	public ResponseEntity<List<Reservation>> getReservations(@PathVariable("id") @NonNull Long id) {
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
+				.body(patients.getReservations(id));
+	}
+
 	//// Vaccination
-	@PatchMapping("/patient/{id}/")
+	@PatchMapping("/reservation/{id}")
 	public ResponseEntity<Reservation> updatePatient(@NonNull Authentication auth,
-													 @PathVariable @NonNull Long id,
-													 @RequestBody Valider body) {
+	                                                 @PathVariable @NonNull Long id) {
 		Optional<Account> acc_opt = medecins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
 		Account acc = acc_opt.get();
 
-		Optional<Patient> patient_opt = patients.get(id);
-		if (patient_opt.isEmpty())
-			return ResponseEntity.notFound().build();
-
-		Optional<Reservation> reservation_opt = reservations.get(body.getReservation());
+		Optional<Reservation> reservation_opt = reservations.get(id);
 		if (reservation_opt.isEmpty())
 			return ResponseEntity.badRequest().build();
 		Reservation reservation = reservation_opt.get();

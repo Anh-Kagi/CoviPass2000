@@ -19,7 +19,7 @@ import java.time.Duration;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/admin/super/")
+@RequestMapping("/private/sadmin/")
 public class SuperAdminController {
 	private final CentreService centres;
 	private final AdminService admins;

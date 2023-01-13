@@ -24,13 +24,12 @@ public class AuthenticationConfigurer {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http, AuthService auth) throws Exception {
 		http.authorizeHttpRequests()
-				.antMatchers("/admin/super/**").hasRole(Role.SUPER_ADMIN.name())
-				.antMatchers("/admin/simple/**").hasRole(Role.ADMIN.name())
-				.antMatchers("/admin/medecin/**").hasRole(Role.MEDECIN.name())
-				.antMatchers("/admin/**").authenticated()
+				.antMatchers("/private/super/**").hasRole(Role.SUPER_ADMIN.name())
+				.antMatchers("/private/simple/**").hasRole(Role.ADMIN.name())
+				.antMatchers("/private/medecin/**").hasRole(Role.MEDECIN.name())
+				.antMatchers("/private/**").authenticated()
 				.anyRequest().permitAll()
 				.and().httpBasic(Customizer.withDefaults())
-				.cors().disable()
 				.csrf().disable()  // TODO: enable
 				.userDetailsService(auth)
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)

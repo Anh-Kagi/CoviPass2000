@@ -9,6 +9,7 @@ import org.polytech.covidapi.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,11 +27,15 @@ public class ReservationService {
 		return reservations.findById(id);
 	}
 
+	public List<Reservation> getByPatient(@NonNull Patient patient) {
+		return reservations.findByPatient(patient);
+	}
+
 	public Reservation create(@NonNull Centre centre,
-							  @NonNull String nom,
-							  @NonNull String prenom,
-							  @NonNull String mail,
-							  @NonNull String telephone) {
+	                          @NonNull String nom,
+	                          @NonNull String prenom,
+	                          @NonNull String mail,
+	                          @NonNull String telephone) {
 		Patient patient = patients.findPatient(nom, prenom, mail, telephone)
 				.orElse(patients.save(new Patient(nom, prenom, mail, telephone)));
 		return reservations.save(new Reservation(centre, patient));

@@ -26,6 +26,10 @@ public class AccountService {
 		return users.findByIdAndRole(id, role);
 	}
 
+	public Optional<Account> find(@NonNull String username) {
+		return users.findByUsername(username);
+	}
+
 	public Optional<Account> find(@NonNull String username, Role role) {
 		return users.findByUsernameAndRole(username, role);
 	}
