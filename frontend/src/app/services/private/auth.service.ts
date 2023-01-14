@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable} from "rxjs";
 
@@ -15,6 +15,8 @@ export enum Role {
 export class AuthService {
 	private role: Role | null = null;
 
+	@Output() public updatedRole = new EventEmitter();
+
 	constructor(private http: HttpClient) {
 	}
 
@@ -22,7 +24,9 @@ export class AuthService {
 		this.role = null;
 		let params = new HttpParams();
 		params = params.set('logout', true);
-		return this.http.get<string>("/public/arthur/", {params}); // invalidate session
+		return this.http.get<string>("/public/arthur/", {params})
+			.pipe(map((r, _) => this.parseRole(r)),
+				map((r, _) => this.setRole(r))); // invalidate session
 	}
 
 	public login(username: string, password: string) {
@@ -32,10 +36,8 @@ export class AuthService {
 		return this.http.get<string>("/public/arthur/", {headers}) // check creds
 			.pipe(map((r, _) => this.parseRole(r)), // parse response
 				map((r, _) => { // store role
-					console.log("role: " + r);
 					if (r !== Role.GUEST) {
-						console.log("login success");
-						this.role = r;
+						this.setRole(r);
 						return true;
 					}
 					return false;
@@ -52,8 +54,8 @@ export class AuthService {
 				.pipe(
 					map((r, _) => this.parseRole(r)),
 					map((r, _) => {
-						this.role = r;
-						return this.role;
+						this.setRole(r);
+						return this.role!;
 					})
 				)
 		}
@@ -61,6 +63,11 @@ export class AuthService {
 			subscriber.next(this.role!);
 			subscriber.complete();
 		});
+	}
+
+	protected setRole(r: Role) {
+		this.role = r;
+		this.updatedRole.emit(this.role);
 	}
 
 	public isAuthenticated() {
