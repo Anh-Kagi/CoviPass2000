@@ -1,15 +1,18 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from '@angular/router'
-import {LoginComponent} from "../public/login/login.component";
-import {AdminHomeComponent} from "../admin-home/admin-home.component";
 import {LayoutComponent} from "./layout.component";
+import {MedecinGuard} from "../guard/medecin/medecin.guard";
 
 const routes: Routes = [
 	{
 		path: '',
 		component: LayoutComponent,
 		children: [
-			{path: '', component: AdminHomeComponent},
+			{
+				path: 'patients',
+				loadChildren: () => import('./patients/patients.module').then(m => m.PatientsModule),
+				canLoad: [MedecinGuard]
+			},
 		],
 	},
 ];

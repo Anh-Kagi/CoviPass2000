@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService, Role} from "./services/private/auth.service";
+import {AuthService} from "./services/private/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -11,18 +11,18 @@ export class AppComponent implements OnInit {
 	title = 'covid-front';
 	titre: string = "CovidApi";
 
-	protected role!: Role;
+	protected logged = false;
 
 	constructor(private auth: AuthService, private router: Router) {
 	}
 
 	ngOnInit() {
-		this.auth.getRole().subscribe(role => this.role = role);
-		this.auth.updatedRole.subscribe(r => this.role = r);
+		this.auth.getAccount().subscribe(a => this.logged = a !== null);
+		this.auth.updatedRole.subscribe(a => this.logged = a !== null);
 	}
 
 	protected authenticated() {
-		return this.role !== Role.GUEST;
+		return this.logged;
 	}
 
 	protected logout() {

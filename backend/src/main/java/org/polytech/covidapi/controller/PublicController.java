@@ -3,15 +3,16 @@ package org.polytech.covidapi.controller;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import org.polytech.covidapi.controller.body.Inscription;
+import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Reservation;
-import org.polytech.covidapi.model.Role;
 import org.polytech.covidapi.service.AccountService;
 import org.polytech.covidapi.service.CentreService;
 import org.polytech.covidapi.service.RateLimitService;
 import org.polytech.covidapi.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,10 +46,12 @@ public class PublicController {
 
 	@GetMapping("/centre/")
 	public ResponseEntity<List<Centre>> rechercherCentre(@RequestParam String ville) {
+		ville = ville.trim().toLowerCase();
 		Optional<ResponseEntity<List<Centre>>> token = rateLimit.tryConsume();
+		String finalVille = ville;
 		return token.orElseGet(() -> ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
-				.body(centres.getAllByVille(ville)));
+				.body(centres.getAllByVille(finalVille)));
 	}
 
 	@PostMapping("/inscrire/")
@@ -60,23 +63,29 @@ public class PublicController {
 				return ResponseEntity.badRequest().build();
 			Centre centre = centre_opt.get();
 
+			// TODO: check inputs
+			body.setNom(body.getNom().trim().toUpperCase());
+			body.setPrenom(body.getPrenom().trim().toLowerCase());
+			body.setMail(body.getMail().trim().toLowerCase());
+			body.setTelephone(body.getTelephone().trim().toLowerCase());
+
 			Reservation reservation = reservations.create(centre, body.getNom(), body.getPrenom(), body.getMail(), body.getTelephone());
 			Metrics.counter("reservations.pending").increment();
 			return ResponseEntity.ok(reservation);
 		});
 	}
 
-	@GetMapping("/arthur/") // TODO: private joke
-	public ResponseEntity<Role> arthur(Authentication authentication) {
-		return ResponseEntity.ok(Optional.ofNullable(authentication)
+	@GetMapping("/login/")
+	public ResponseEntity<Account> login(Authentication authentication) {
+		return Optional.ofNullable(authentication)
 				.flatMap(auth -> accounts.find(auth.getName()))
-				.map(account -> account.getRole())
-				.orElse(null));
+				.map(ResponseEntity::ok)
+				.orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 
-	@GetMapping(value = "/arthur/", params = {"logout"})
-	public ResponseEntity<Role> arthur(SecurityContextHolder context) {
-		context.clearContext();
-		return ResponseEntity.ok(null);
+	@GetMapping(value = "/login/", params = {"logout"})
+	public ResponseEntity<Account> logout() {
+		SecurityContextHolder.clearContext();
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 }

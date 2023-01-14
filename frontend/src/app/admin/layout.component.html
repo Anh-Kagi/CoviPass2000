@@ -1,2 +1,11 @@
-<p>layout works!</p>
-<router-outlet></router-outlet>
+<nav [tabPanel]="tabPanel" mat-tab-nav-bar>
+	<a (click)="active = link.path"
+	   *ngFor="let link of links"
+	   [active]="active === link.path"
+	   [disabled]="link.disabled"
+	   [routerLink]="[link.path]"
+	   mat-tab-link>{{ link.label }}</a>
+</nav>
+<mat-tab-nav-panel #tabPanel>
+	<router-outlet></router-outlet>
+</mat-tab-nav-panel>

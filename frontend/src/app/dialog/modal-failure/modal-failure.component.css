@@ -39,7 +39,7 @@
 
 @keyframes line-first {
 	0% {
-		width: 0%;
+		width: 0;
 	}
 	50% {
 		width: 68%;
@@ -51,10 +51,10 @@
 
 @keyframes line-second {
 	0% {
-		width: 0%;
+		width: 0;
 	}
 	50% {
-		width: 0%;
+		width: 0;
 	}
 	100% {
 		width: 68%;

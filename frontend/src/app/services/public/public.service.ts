@@ -17,7 +17,7 @@ export class PublicService {
 
 	public listCentre(ville: string) {
 		let params = new HttpParams();
-		params = params.append("ville", ville);
+		params = params.append("ville", ville.trim().toLowerCase());
 
 		return this.http.get<Centre[]>("/public/centre/",
 			{
@@ -29,10 +29,10 @@ export class PublicService {
 	public inscrire(centre: number, nom: string, prenom: string, mail: string, telephone: string) {
 		let data = {
 			centre: centre,
-			nom: nom,
-			prenom: prenom,
-			mail: mail,
-			telephone: telephone
+			nom: nom.trim().toLowerCase(),
+			prenom: prenom.trim().toLowerCase(),
+			mail: mail.trim().toLowerCase(),
+			telephone: telephone.trim().toLowerCase(),
 		};
 		return this.http.post("/public/inscrire/", data);
 	}

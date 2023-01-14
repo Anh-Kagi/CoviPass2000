@@ -1,19 +1,27 @@
 import {EventEmitter, Injectable, Output} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable} from "rxjs";
+import {Centre} from "../public/public.service";
 
 export enum Role {
-	GUEST = 'GUEST',
 	MEDECIN = 'MEDECIN',
 	ADMIN = 'ADMIN',
 	SADMIN = 'SUPER_ADMIN'
+}
+
+export interface Account {
+	id: number;
+	username: string,
+	password: string,
+	centre: Centre | null
+	role: Role,
 }
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AuthService {
-	private role: Role | null = null;
+	private account: Account | null = null;
 
 	@Output() public updatedRole = new EventEmitter();
 
@@ -21,70 +29,58 @@ export class AuthService {
 	}
 
 	public logout() {
-		this.role = null;
+		this.account = null;
 		let params = new HttpParams();
 		params = params.set('logout', true);
-		return this.http.get<string>("/public/arthur/", {params})
-			.pipe(map((r, _) => this.parseRole(r)),
-				map((r, _) => this.setRole(r))); // invalidate session
+		return this.http.get<Account>("/public/login/", {params})
+			.pipe(map((a, _) => this.setAccount(a)), // should not happen (logout should return 401)
+				catchError((_err, _granted) => new Observable<null>(subscriber => { // TODO don't show error in console
+					this.setAccount(null);
+					subscriber.next(null);
+					subscriber.complete();
+				}))); // invalidate session
 	}
 
 	public login(username: string, password: string) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', "Basic " + btoa(username + ":" + password));
 
-		return this.http.get<string>("/public/arthur/", {headers}) // check creds
-			.pipe(map((r, _) => this.parseRole(r)), // parse response
-				map((r, _) => { // store role
-					if (r !== Role.GUEST) {
-						this.setRole(r);
-						return true;
-					}
-					return false;
-				}),
-				catchError((err, _) => new Observable<boolean>(subscriber => {  // TODO check errors ?
-					subscriber.next(false);
+		return this.http.get<Account>("/public/login/", {headers}) // check creds
+			.pipe(map((a, _) => this.setAccount(a)),// store account
+				catchError((err, _) => new Observable<null>(subscriber => {
+					this.setAccount(null);
+					subscriber.next(null);
 					subscriber.complete();
 				})));
 	}
 
-	public getRole() {
-		if (this.role === null) {
-			return this.http.get<string>("/public/arthur/")
-				.pipe(
-					map((r, _) => this.parseRole(r)),
-					map((r, _) => {
-						this.setRole(r);
-						return this.role!;
-					})
-				)
+	public getAccount() {
+		if (this.account === null) {
+			return this.http.get<Account>("/public/login/")
+				.pipe(map((a, _) => {
+						this.setAccount(a);
+						return this.account;
+					}),
+					catchError((_err, _granted) => new Observable<null>(subscriber => {
+						this.setAccount(null);
+						subscriber.next(null);
+						subscriber.complete();
+					})));
 		}
-		return new Observable<Role>(subscriber => {
-			subscriber.next(this.role!);
+		return new Observable<Account | null>(subscriber => {
+			subscriber.next(this.account);
 			subscriber.complete();
 		});
 	}
 
-	protected setRole(r: Role) {
-		this.role = r;
-		this.updatedRole.emit(this.role);
-	}
-
 	public isAuthenticated() {
-		return this.getRole()
-			.pipe(map((r, _) => r !== Role.GUEST));
+		return this.getAccount()
+			.pipe(map((a, _) => a !== null));
 	}
 
-	protected parseRole(role: string) {
-		switch (role) {
-			case "MEDECIN":
-				return Role.MEDECIN;
-			case "ADMIN":
-				return Role.ADMIN;
-			case "SUPER_ADMIN":
-				return Role.SADMIN;
-			default:
-				return Role.GUEST;
-		}
+	protected setAccount(a: Account | null) {
+		this.account = a;
+		this.updatedRole.emit(this.account);
+		return this.account;
 	}
 }

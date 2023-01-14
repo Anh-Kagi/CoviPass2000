@@ -27,6 +27,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatCardModule} from "@angular/material/card";
 import {LoginComponent} from "./public/login/login.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -43,6 +45,7 @@ import {LoginComponent} from "./public/login/login.component";
 		ModalInscriptionComponent,
 		ModalSuccessComponent,
 		ModalFailureComponent,
+		NotFoundComponent
 	],
 	imports: [
 		BrowserModule,
@@ -59,7 +62,8 @@ import {LoginComponent} from "./public/login/login.component";
 		MatListModule,
 		MatGridListModule,
 		MatSidenavModule,
-		MatCardModule
+		MatCardModule,
+		MatSnackBarModule
 	],
 	providers: [
 		{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},

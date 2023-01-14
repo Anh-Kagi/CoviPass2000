@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AuthService} from "../auth.service";
 import {HttpClient, HttpParams} from "@angular/common/http";
+import {Centre} from "../../public/public.service";
 
 export interface Patient {
 	id: number;
@@ -12,8 +13,8 @@ export interface Patient {
 
 export interface Reservation {
 	id: number;
-	centre: number;
-	patient: number;
+	centre: Centre;
+	patient: Patient;
 	faite: boolean;
 }
 
@@ -27,11 +28,18 @@ export class MedecinService {
 	}
 
 	public getPatients(prenom: string, nom: string) {
-		let params = new HttpParams();
-		params = params.append("prenom", prenom);
-		params = params.append("nom", nom);
+		prenom = prenom.trim().toLowerCase();
+		nom = nom.trim().toLowerCase();
 
-		let url = this.buildUrl("patients");
+		let params = new HttpParams();
+		if (prenom.length > 0) {
+			params = params.append("prenom", prenom);
+		}
+		if (nom.length > 0) {
+			params = params.append("nom", nom);
+		}
+
+		let url = this.buildUrl("patient");
 		return this.http.get<Patient[]>(url, {params});
 	}
 

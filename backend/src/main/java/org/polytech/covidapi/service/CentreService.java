@@ -27,7 +27,7 @@ public class CentreService {
 	}
 
 	public List<Centre> getAllByVille(@NonNull String ville) {
-		return centres.findAllByVille(ville);
+		return centres.findAllByVilleIgnoreCase(ville);
 	}
 
 	public Centre update(@NonNull Centre centre, String nom, String ville, String adresse) {

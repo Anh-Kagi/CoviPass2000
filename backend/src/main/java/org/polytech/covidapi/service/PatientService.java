@@ -7,7 +7,7 @@ import org.polytech.covidapi.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,17 +23,20 @@ public class PatientService {
 	}
 
 	public List<Patient> getAll(String nom, String prenom) {
+		List<Patient> matches = new LinkedList<>();
 		if (nom != null && prenom != null) {
-			return patients.findAllByNomAndPrenom(nom, prenom);
-		} else {
-			return patients.findAllByNomOrPrenom(nom, prenom);
+			matches.addAll(patients.findAllByNomIgnoreCaseAndPrenomIgnoreCase(nom, prenom));
 		}
+		if (nom != null ^ prenom != null) {
+			matches.addAll(patients.findAllByNomIgnoreCaseOrPrenomIgnoreCase(nom, prenom));
+		}
+		return matches;
 	}
 
 	public List<Reservation> getReservations(@NonNull Long id) {
-		return patients.findById(id).map(patient -> {
-			return reservations.getByPatient(patient);
-		}).orElse(Arrays.asList());
+		return patients.findById(id)
+				.map(reservations::getByPatient)
+				.orElse(List.of());
 	}
 
 	public Optional<Patient> get(@NonNull Long id) {

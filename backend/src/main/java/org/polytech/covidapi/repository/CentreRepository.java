@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CentreRepository extends JpaRepository<Centre, Long> {
-	List<Centre> findAllByVille(String ville);
+	List<Centre> findAllByVilleIgnoreCase(String ville);
 }
