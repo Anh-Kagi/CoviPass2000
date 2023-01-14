@@ -50,7 +50,7 @@ export class MedecinService {
 
 	public validateReservation(reservation: number) {
 		let url = this.buildUrl("reservation", String(reservation));
-		return this.http.patch<Reservation>(url, undefined);
+		return this.http.put<Reservation>(url, undefined);
 	}
 
 	protected buildUrl(...url: string[]) {

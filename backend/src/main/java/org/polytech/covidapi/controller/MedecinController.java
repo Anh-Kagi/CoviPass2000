@@ -55,7 +55,7 @@ public class MedecinController {
 	}
 
 	//// Vaccination
-	@PatchMapping("/reservation/{id}")
+	@PutMapping("/reservation/{id}")
 	public ResponseEntity<Reservation> updatePatient(@NonNull Authentication auth,
 	                                                 @PathVariable @NonNull Long id) {
 		Optional<Account> acc_opt = medecins.get(auth.getName());
