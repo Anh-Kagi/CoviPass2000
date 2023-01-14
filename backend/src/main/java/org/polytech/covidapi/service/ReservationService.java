@@ -37,7 +37,7 @@ public class ReservationService {
 	                          @NonNull String mail,
 	                          @NonNull String telephone) {
 		Patient patient = patients.findPatient(nom, prenom, mail, telephone)
-				.orElse(patients.save(new Patient(nom, prenom, mail, telephone)));
+				.orElseGet(() -> patients.save(new Patient(nom, prenom, mail, telephone)));
 		return reservations.save(new Reservation(centre, patient));
 	}
 

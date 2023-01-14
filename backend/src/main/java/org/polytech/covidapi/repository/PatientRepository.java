@@ -15,6 +15,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
 	List<Patient> findAllByNomIgnoreCaseAndPrenomIgnoreCase(String nom, String prenom);
 
-	@Query("SELECT p FROM Patient p WHERE p.nom = upper(:nom) AND p.prenom = lower(:prenom) AND p.mail = lower(:mail) AND p.telephone = lower(:phone)")
+	@Query("SELECT p FROM Patient p WHERE upper(p.nom) = :nom AND p.prenom = :prenom AND p.mail = :mail AND p.telephone = :phone")
 	Optional<Patient> findPatient(@Param("nom") String nom, @Param("prenom") String prenom, @Param("mail") String mail, @Param("phone") String telephone);
 }
