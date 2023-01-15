@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./services/private/auth.service";
 import {Router} from "@angular/router";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
 	selector: 'app-root',
@@ -13,7 +14,11 @@ export class AppComponent implements OnInit {
 
 	protected logged = false;
 
-	constructor(private auth: AuthService, private router: Router) {
+	
+	results;
+	constructor(private auth: AuthService, private router: Router, http: HttpClient) {
+		const path = 'https://github.com/Anh-Kagi/CoviPass2000';
+		this.results = http.get(path);
 	}
 
 	ngOnInit() {

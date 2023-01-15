@@ -11,7 +11,7 @@ import {AdminHomeComponent} from './admin-home/admin-home.component';
 import {AdminCentresComponent} from './admin-centres/admin-centres.component';
 import {AppRoutingModule} from './app-routing.module';
 import {CentreCardComponent} from './public/liste-centres/centre-card/centre-card.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ReactiveFormsModule} from "@angular/forms";
 import {ModalInscriptionComponent} from './public/liste-centres/modal-inscription/modal-inscription.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -29,6 +29,7 @@ import {MatCardModule} from "@angular/material/card";
 import {LoginComponent} from "./public/login/login.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { TokenInterceptor } from './token.interceptor';
 
 
 @NgModule({
@@ -64,9 +65,11 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 		MatSidenavModule,
 		MatCardModule,
 		MatSnackBarModule
+		
 	],
 	providers: [
 		{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},
+		{provide : HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true} 
 	],
 	bootstrap: [AppComponent]
 })
