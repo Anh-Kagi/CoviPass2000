@@ -11,7 +11,7 @@ import {AdminHomeComponent} from './admin-home/admin-home.component';
 import {AdminCentresComponent} from './admin-centres/admin-centres.component';
 import {AppRoutingModule} from './app-routing.module';
 import {CentreCardComponent} from './public/liste-centres/centre-card/centre-card.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ReactiveFormsModule} from "@angular/forms";
 import {ModalInscriptionComponent} from './public/liste-centres/modal-inscription/modal-inscription.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -32,6 +32,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ModalAccountComponent} from './dialogs/modal-account/modal-account.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {ModalCentreComponent} from './dialogs/modal-centre/modal-centre.component';
+import { TokenInterceptor } from './token.interceptor';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import {ModalCentreComponent} from './dialogs/modal-centre/modal-centre.componen
 	],
 	providers: [
 		{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},
+		{provide : HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
 	],
 	bootstrap: [AppComponent]
 })
