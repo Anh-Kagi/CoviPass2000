@@ -112,7 +112,7 @@ public class AdminController {
 			return ResponseEntity.notFound().build();
 		Account medecin = medecin_opt.get();
 
-		if (!admins.canAlter(acc, medecin.getCentre()))
+		if (medecin.getCentre() != null && !admins.canAlter(acc, medecin.getCentre()))
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
 		medecin = medecins.update(medecin_opt.get(), body.getUsername(), body.getPassword(), centre);
