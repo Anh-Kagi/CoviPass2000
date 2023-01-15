@@ -31,6 +31,7 @@ import {NotFoundComponent} from "./not-found/not-found.component";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ModalAccountComponent} from './dialogs/modal-account/modal-account.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {ModalCentreComponent} from './dialogs/modal-centre/modal-centre.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 		ModalSuccessComponent,
 		ModalFailureComponent,
 		NotFoundComponent,
-		ModalAccountComponent
+		ModalAccountComponent,
+		ModalCentreComponent
 	],
 	imports: [
 		BrowserModule,

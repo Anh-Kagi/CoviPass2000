@@ -1,28 +1,24 @@
-<p>modal-update-account works!</p>
-
 <mat-dialog-content>
 	<form [formGroup]="form" class="d-flex flex-column justify-content-center">
 		<mat-form-field appearance="fill">
 			<mat-label>Nom d'utilisateur</mat-label>
-			<input [required]="data.required" formControlName="username" matInput placeholder="medecin" type="text"/>
-			<mat-hint>Nouvelle valeur: {{newValues.username ?? 'inchangé'}}</mat-hint>
+			<input formControlName="username" matInput placeholder="medecin" required type="text"/>
 		</mat-form-field>
 
 		<mat-form-field appearance="fill">
 			<mat-label>Mot de passe</mat-label>
-			<input [required]="data.required" [type]="visiblePassword ? 'text' : 'password'" formControlName="password"
+			<input [type]="visiblePassword ? 'text' : 'password'" formControlName="password"
 				   matInput
 				   placeholder="mot de passe"/>
 			<button (click)="togglePasswordVisibility()" mat-icon-button matSuffix type="button">
 				<mat-icon>{{visiblePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
 			</button>
-			<mat-hint *ngIf="visiblePassword">Nouvelle valeur: {{newValues.password ?? 'inchangé'}}</mat-hint>
 		</mat-form-field>
 
 		<mat-form-field appearance="fill">
 			<mat-label>Centre</mat-label>
-			<input [matAutocomplete]="autoGroup" [required]="data.required" formControlName="centre" matInput
-				   type="text"/>
+			<input [matAutocomplete]="autoGroup" formControlName="centre" matInput
+				   required type="text"/>
 			<mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayCentre">
 				<mat-optgroup *ngFor="let group of filteredCentres | async | keyvalue" [label]="group.key">
 					<mat-option *ngFor="let centre of group.value" [value]="centre">
@@ -30,13 +26,11 @@
 					</mat-option>
 				</mat-optgroup>
 			</mat-autocomplete>
-			<mat-hint>Nouvelle
-				valeur: {{newValues.centre ? newValues.centre.nom + '#' + newValues.centre.id : '-'}}</mat-hint>
 		</mat-form-field>
 	</form>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-	<button [mat-dialog-close]="true" mat-button>Annuler</button>
+	<button [mat-dialog-close]="null" mat-button>Annuler</button>
 	<button (click)="submit()" color="primary" mat-raised-button>Modifier</button>
 </mat-dialog-actions>

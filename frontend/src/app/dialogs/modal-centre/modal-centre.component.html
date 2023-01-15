@@ -1,0 +1,21 @@
+<mat-dialog-content>
+	<form [formGroup]="form" class="d-flex flex-column">
+		<mat-form-field appearance="fill">
+			<mat-label>Nom</mat-label>
+			<input formControlName="nom" matInput required type="text"/>
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Adresse</mat-label>
+			<input formControlName="adresse" matInput required type="text"/>
+		</mat-form-field>
+		<mat-form-field appearance="fill">
+			<mat-label>Ville</mat-label>
+			<input formControlName="ville" matInput required type="text"/>
+		</mat-form-field>
+	</form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button [mat-dialog-close]="null" mat-button>Annuler</button>
+	<button (click)="submit()" color="primary" mat-raised-button>Valider</button>
+</mat-dialog-actions>

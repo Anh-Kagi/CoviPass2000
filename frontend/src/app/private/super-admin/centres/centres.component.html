@@ -1,0 +1,49 @@
+<div class="d-flex flex-column justify-content-center">
+	<table [dataSource]="centres" mat-table>
+		<ng-container matColumnDef="create">
+			<th *matHeaderCellDef mat-header-cell>
+				<button (click)="create()" color="primary" mat-raised-button>Nouveau</button>
+			</th>
+			<td *matCellDef="let element" mat-cell></td>
+		</ng-container>
+		<ng-container matColumnDef="id">
+			<th *matHeaderCellDef mat-header-cell>N°</th>
+			<td *matCellDef="let element" mat-cell><span
+				class="fst-italic fw-lighter">#{{element.centre.id}}</span></td>
+		</ng-container>
+
+		<ng-container matColumnDef="nom">
+			<th *matHeaderCellDef mat-header-cell>Nom</th>
+			<td *matCellDef="let element"
+				mat-cell>{{element.centre.nom}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="adresse">
+			<th *matHeaderCellDef mat-header-cell>Adresse</th>
+			<td *matCellDef="let element" mat-cell>{{element.centre.adresse}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="ville">
+			<th *matHeaderCellDef mat-header-cell>Ville</th>
+			<td *matCellDef="let element" mat-cell>{{element.centre.ville}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th *matHeaderCellDef mat-header-cell>Actions</th>
+			<td *matCellDef="let element" mat-cell>
+				<button (click)="update(element)" color="primary" mat-icon-button>
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button (click)="delete(element)" *ngIf="!element.todelete" color="warn" mat-icon-button>
+					<mat-icon>delete</mat-icon>
+				</button>
+				<button *ngIf="element.todelete" color="warn" mat-icon-button>
+					<mat-icon class="spinning">sync</mat-icon>
+				</button>
+			</td>
+		</ng-container>
+
+		<tr *matHeaderRowDef="columns" mat-header-row></tr>
+		<tr *matRowDef="let row; columns: columns;" mat-row></tr>
+	</table>
+</div>

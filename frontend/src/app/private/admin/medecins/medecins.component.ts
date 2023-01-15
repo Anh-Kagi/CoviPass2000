@@ -21,24 +21,6 @@ export class MedecinsComponent implements OnInit {
 		this.syncMedecins();
 	}
 
-	edit(medecin: Account) {
-		this.dialog.open(ModalAccountComponent, {
-			data: {
-				required: false, callback: (m: ModalAccountData) => {
-					this.snackBar.open("Modification en cours...", "Annuler", {duration: 5000})
-						.afterDismissed()
-						.subscribe(v => {
-							if (!v.dismissedByAction)
-								this.service.updateMedecin(medecin.id, m.username, m.password, m.centre?.id ?? null)
-									.subscribe(() => {
-										this.syncMedecins();
-									});
-						});
-				}
-			}
-		});
-	}
-
 	protected syncMedecins() {
 		this.service.listMedecin()
 			.subscribe(m => {
@@ -46,21 +28,37 @@ export class MedecinsComponent implements OnInit {
 			})
 	}
 
-	protected create() {
-		this.dialog.open(ModalAccountComponent, {
-			data: {
-				required: true, callback: (m: ModalAccountData) => {
-					this.snackBar.open("Création en cours...", "Annuler", {duration: 5000})
+	edit(medecin: Account) {
+		this.dialog.open(ModalAccountComponent, {data: medecin})
+			.afterClosed()
+			.subscribe((m: ModalAccountData | null) => {
+				if (m)
+					this.snackBar.open("Modification en cours...", "Annuler", {duration: 5000})
 						.afterDismissed()
 						.subscribe(v => {
 							if (!v.dismissedByAction)
-								this.service.createMedecin(m.username!, m.password!, m.centre!.id)
+								this.service.updateMedecin(medecin.id, m.username, m.password, m.centre.id)
 									.subscribe(() => {
 										this.syncMedecins();
 									});
 						});
-				}
-			}
-		});
+			});
+	}
+
+	protected create() {
+		this.dialog.open(ModalAccountComponent, {data: {username: '', password: '', centre: ''}})
+			.afterClosed()
+			.subscribe((m: ModalAccountData | null) => {
+				if (m)
+					this.snackBar.open("Création en cours...", "Annuler", {duration: 5000})
+						.afterDismissed()
+						.subscribe(v => {
+							if (!v.dismissedByAction)
+								this.service.createMedecin(m.username, m.password, m.centre.id)
+									.subscribe(() => {
+										this.syncMedecins();
+									});
+						});
+			});
 	}
 }

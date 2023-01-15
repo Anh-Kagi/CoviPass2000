@@ -39,6 +39,7 @@ export class ReservationsComponent implements OnInit {
 							}
 						});
 				}
+				reservation.todelete = false;
 			});
 	}
 

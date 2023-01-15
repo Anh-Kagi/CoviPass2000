@@ -50,7 +50,7 @@ export class LayoutComponent implements OnInit {
 
 	private getSuperAdminRoute() {
 		return [{path: 'sadmin/centres', label: 'Centres', disabled: false},
-			{path: 'sadmin/admins', label: 'Admins', disabled: false}];
+			{path: 'sadmin/admins', label: 'Administrateurss', disabled: false}];
 	}
 
 	private getUnauthorizedRoute() {

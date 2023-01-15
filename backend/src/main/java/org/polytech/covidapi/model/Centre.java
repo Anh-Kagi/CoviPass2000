@@ -29,6 +29,8 @@ public class Centre {
 	@Setter
 	private String adresse;
 
+	// TODO: add cascading
+
 	public Centre(String nom, String ville, String adresse) {
 		this.nom = nom;
 		this.ville = ville;

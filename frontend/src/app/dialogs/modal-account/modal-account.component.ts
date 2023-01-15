@@ -5,8 +5,7 @@ import {map, Observable} from "rxjs";
 import {AdminService} from "../../services/private/admin/admin.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
-export type ModalAccountData = { username: string | null; password: string | null; centre: Centre | null };
-
+export type ModalAccountData = { username: string; password: string; centre: Centre };
 @Component({
 	selector: 'app-modal-update-account',
 	templateUrl: './modal-account.component.html',
@@ -23,26 +22,24 @@ export class ModalAccountComponent implements OnInit {
 
 	protected centres: Centre[] = [];
 	protected filteredCentres: Observable<Map<string, Centre[]>>;
-	protected newValues: ModalAccountData = {
-		username: null,
-		password: null,
-		centre: null
-	};
+	protected newValues: ModalAccountData;
 
 	constructor(private service: AdminService,
 				private dialog: MatDialogRef<ModalAccountComponent>,
-				@Inject(MAT_DIALOG_DATA) protected data: { required: boolean, callback: (d: ModalAccountData) => void }) {
-		this.filteredCentres = this.form.get('centre')!.valueChanges.pipe(map(value => this.filter(typeof value === 'string' ? value : (value ? value.nom : ''))))
-		this.form.valueChanges.subscribe(() => {
-			this.newValues = this.computeNewValues();
-		});
+				@Inject(MAT_DIALOG_DATA) protected data: ModalAccountData) {
+		this.newValues = data;
+		this.filteredCentres = this.form.controls.centre.valueChanges
+			.pipe(map(value => this.filter(typeof value === 'string' ? value : (value ? value.nom : ''))));
+		this.form.valueChanges.subscribe(() => this.newValues = this.computeNewValues());
 	}
 
 	ngOnInit(): void {
+		this.form.controls.username.setValue(this.data.username);
+		// TODO: select the provided centre (crashes for the moment)
 		this.service.getCentres()
 			.subscribe(c => {
 				this.centres = c;
-				this.form.get('centre')!.setValue(null); // actualize filtered list
+				this.form.controls.centre.setValue(null);
 			});
 	}
 
@@ -55,14 +52,14 @@ export class ModalAccountComponent implements OnInit {
 	}
 
 	protected computeNewValues() {
-		let username: string | null = this.form.get('username')?.value ?? '';
+		let username: string = this.form.get('username')?.value ?? '';
 		username = username.trim();
-		username = username.length > 0 ? username : null;
-		let password: string | null = this.form.get('password')?.value ?? '';
+		username = username.length > 0 ? username : this.data.username;
+		let password: string = this.form.get('password')?.value ?? '';
 		password = password.trim();
-		password = password.length > 0 ? password : null;
+		password = password.length > 0 ? password : this.data.password;
 		let centre_tmp = this.form.get('centre')?.value ?? null;
-		let centre: Centre | null = null;
+		let centre: Centre = this.data.centre;
 		if (centre_tmp !== null && typeof centre_tmp !== 'string')
 			centre = centre_tmp;
 
@@ -70,8 +67,7 @@ export class ModalAccountComponent implements OnInit {
 	}
 
 	protected submit() {
-		this.data.callback(this.newValues);
-		this.dialog.close();
+		this.dialog.close(this.newValues as ModalAccountData);
 	}
 
 	private filter(value: string) {

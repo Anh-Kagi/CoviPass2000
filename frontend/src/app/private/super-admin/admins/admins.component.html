@@ -1,0 +1,39 @@
+<div class="d-flex flex-column justify-content-center">
+	<table [dataSource]="admins" mat-table>
+		<ng-container matColumnDef="create">
+			<th *matHeaderCellDef mat-header-cell>
+				<button (click)="create()" color="primary" mat-raised-button>Nouveau</button>
+			</th>
+			<td *matCellDef="let admin" mat-cell></td>
+		</ng-container>
+
+		<ng-container matColumnDef="username">
+			<th *matHeaderCellDef mat-header-cell>Nom d'utilisateur</th>
+			<td *matCellDef="let admin" mat-cell>{{admin.username}}<span
+				class="fst-italic fw-lighter">#{{admin.id}}</span></td>
+		</ng-container>
+
+		<ng-container matColumnDef="centre">
+			<th *matHeaderCellDef mat-header-cell>Centre</th>
+			<td *matCellDef="let admin" mat-cell>{{admin.centre?.nom ?? 'Aucun'}}<span
+				*ngIf="admin.centre !== null"
+				class="fst-italic fw-lighter">#{{admin.centre!.id}}</span>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th *matHeaderCellDef mat-header-cell>Actions</th>
+			<td *matCellDef="let admin" mat-cell>
+				<button (click)="edit(admin)" color="accent" mat-icon-button>
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button (click)="delete(admin)" color="warn" mat-icon-button>
+					<mat-icon>delete</mat-icon>
+				</button>
+			</td>
+		</ng-container>
+
+		<tr *matHeaderRowDef="columns" mat-header-row></tr>
+		<tr *matRowDef="let row; columns: columns;" mat-row></tr>
+	</table>
+</div>

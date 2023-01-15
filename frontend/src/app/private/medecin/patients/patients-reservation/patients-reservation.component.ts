@@ -60,6 +60,7 @@ export class PatientsReservationComponent implements OnInit {
 							error: _ => reservation.state = ReservationState.TODO
 						});
 				}
+				reservation.state = ReservationState.TODO;
 			});
 		}
 	}
