@@ -71,8 +71,10 @@ public class AdminController {
 		List<Account> accounts;
 		if (acc.getRole().equals(Role.SUPER_ADMIN))
 			accounts = medecins.list();
-		else
+		else {
 			accounts = medecins.list(acc.getCentre());
+			accounts.addAll(medecins.list(null));
+		}
 		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofMinutes(5))).body(accounts);
 	}
 
