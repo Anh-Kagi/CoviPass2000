@@ -9,7 +9,8 @@ import {Patient} from "../../../services/models/patient";
 	styleUrls: ['./patients.component.css']
 })
 export class PatientsComponent implements OnInit {
-	protected patients: Patient[];
+	protected patients: Patient[] = [];
+	protected columns = ['id', 'nom', 'prenom', 'mail', 'telephone', 'action'];
 
 	protected form = new FormGroup({
 		prenom: new FormControl('', {
@@ -21,13 +22,9 @@ export class PatientsComponent implements OnInit {
 	})
 
 	constructor(private service: MedecinService) {
-		this.patients = [];
 	}
 
 	ngOnInit(): void {
-	}
-
-	onSubmit() {
 		this.service.getPatients(this.form.value.prenom!, this.form.value.nom!)
 			.subscribe(p => {
 				this.patients = p;

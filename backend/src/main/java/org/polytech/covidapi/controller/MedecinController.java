@@ -5,6 +5,7 @@ import lombok.NonNull;
 import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.model.Reservation;
+import org.polytech.covidapi.model.Role;
 import org.polytech.covidapi.service.MedecinService;
 import org.polytech.covidapi.service.PatientService;
 import org.polytech.covidapi.service.ReservationService;
@@ -36,10 +37,15 @@ public class MedecinController {
 
 	//// Patient
 	@GetMapping("/patient/")
-	public ResponseEntity<List<Patient>> getPatients(@RequestParam(required = false) String prenom, @RequestParam(required = false) String nom) {
+	public ResponseEntity<List<Patient>> getPatients(Authentication auth) {
+		Optional<Account> acc_opt = medecins.get(auth.getName());
+		if (acc_opt.isEmpty())
+			return ResponseEntity.internalServerError().build();
+		Account acc = acc_opt.get();
+
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
-				.body(patients.getAll(nom, prenom));
+				.body(acc.getRole() == Role.SUPER_ADMIN ? patients.list() : patients.listByCentre(acc.getCentre()));
 	}
 
 	@GetMapping("/patient/{id}/reservations/")

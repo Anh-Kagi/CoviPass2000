@@ -1,13 +1,13 @@
 package org.polytech.covidapi.service;
 
 import lombok.NonNull;
+import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Patient;
 import org.polytech.covidapi.model.Reservation;
 import org.polytech.covidapi.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,15 +22,12 @@ public class PatientService {
 		this.reservations = reservations;
 	}
 
-	public List<Patient> getAll(String nom, String prenom) {
-		List<Patient> matches = new LinkedList<>();
-		if (nom != null && prenom != null) {
-			matches.addAll(patients.findAllByNomIgnoreCaseAndPrenomIgnoreCase(nom, prenom));
-		}
-		if (nom != null ^ prenom != null) {
-			matches.addAll(patients.findAllByNomIgnoreCaseOrPrenomIgnoreCase(nom, prenom));
-		}
-		return matches;
+	public List<Patient> listByCentre(Centre centre) {
+		return patients.findAllByCentre(centre);
+	}
+
+	public List<Patient> list() {
+		return patients.findAll();
 	}
 
 	public List<Reservation> getReservations(@NonNull Long id) {
