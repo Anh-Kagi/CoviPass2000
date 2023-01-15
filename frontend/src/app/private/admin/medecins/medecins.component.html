@@ -1,5 +1,12 @@
 <div class="d-flex flex-column justify-content-center">
 	<table [dataSource]="medecins" mat-table>
+		<ng-container matColumnDef="create">
+			<th *matHeaderCellDef mat-header-cell>
+				<button (click)="create()" color="primary" mat-raised-button>Nouveau</button>
+			</th>
+			<td *matCellDef="let medecin" mat-cell></td>
+		</ng-container>
+
 		<ng-container matColumnDef="username">
 			<th *matHeaderCellDef mat-header-cell>Nom d'utilisateur</th>
 			<td *matCellDef="let medecin" mat-cell>{{medecin.username}}<span

@@ -1,17 +1,18 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {AdminService} from "../../../../services/private/admin/admin.service";
-import {Centre} from "../../../../services/models/centre";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Centre} from "../../services/models/centre";
 import {map, Observable} from "rxjs";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {AdminService} from "../../services/private/admin/admin.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+
+export type ModalAccountData = { username: string | null; password: string | null; centre: Centre | null };
 
 @Component({
-	selector: 'app-modal-update',
-	templateUrl: './modal-update.component.html',
-	styleUrls: ['./modal-update.component.css']
+	selector: 'app-modal-update-account',
+	templateUrl: './modal-account.component.html',
+	styleUrls: ['./modal-account.component.css']
 })
-export class ModalUpdateComponent implements OnInit {
+export class ModalAccountComponent implements OnInit {
 	protected form = new FormGroup({
 		username: new FormControl(''),
 		password: new FormControl(''),
@@ -22,18 +23,17 @@ export class ModalUpdateComponent implements OnInit {
 
 	protected centres: Centre[] = [];
 	protected filteredCentres: Observable<Map<string, Centre[]>>;
-	protected newValues: { username: string | null; password: string | null; centre: Centre | null } = {
+	protected newValues: ModalAccountData = {
 		username: null,
 		password: null,
 		centre: null
 	};
 
 	constructor(private service: AdminService,
-				private dialog: MatDialogRef<ModalUpdateComponent>,
-				private snackBar: MatSnackBar,
-				@Inject(MAT_DIALOG_DATA) private medecin: number) {
+				private dialog: MatDialogRef<ModalAccountComponent>,
+				@Inject(MAT_DIALOG_DATA) protected data: { required: boolean, callback: (d: ModalAccountData) => void }) {
 		this.filteredCentres = this.form.get('centre')!.valueChanges.pipe(map(value => this.filter(typeof value === 'string' ? value : (value ? value.nom : ''))))
-		this.form.get('centre')!.valueChanges.subscribe(() => {
+		this.form.valueChanges.subscribe(() => {
 			this.newValues = this.computeNewValues();
 		});
 	}
@@ -69,18 +69,9 @@ export class ModalUpdateComponent implements OnInit {
 		return {username, password, centre};
 	}
 
-	protected updateMedecin() {
-		this.snackBar.open('Mise à jour en cours...', 'Annuler', {duration: 5000})
-			.afterDismissed()
-			.subscribe(v => {
-				if (!v.dismissedByAction) {
-					let {username, password, centre} = this.computeNewValues();
-					this.service.updateMedecin(this.medecin, username, password, centre ? centre.id : null)
-						.subscribe(() => {
-							this.dialog.close(true);
-						});
-				}
-			});
+	protected submit() {
+		this.data.callback(this.newValues);
+		this.dialog.close();
 	}
 
 	private filter(value: string) {

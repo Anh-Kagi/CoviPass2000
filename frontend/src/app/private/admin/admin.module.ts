@@ -6,7 +6,6 @@ import {MatTableModule} from "@angular/material/table";
 import {MatIconModule} from "@angular/material/icon";
 import {AdminRoutingModule} from "./admin-routing.module";
 import {MatButtonModule} from "@angular/material/button";
-import {ModalUpdateComponent} from './medecins/modal-update/modal-update.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatDialogModule} from "@angular/material/dialog";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -17,7 +16,6 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 	declarations: [
 		MedecinsComponent,
 		ReservationsComponent,
-		ModalUpdateComponent
 	],
 	imports: [
 		CommonModule,

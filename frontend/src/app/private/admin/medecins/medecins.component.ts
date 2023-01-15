@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Account} from "../../../services/models/account";
 import {AdminService} from "../../../services/private/admin/admin.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ModalUpdateComponent} from "./modal-update/modal-update.component";
+import {ModalAccountComponent, ModalAccountData} from "../../../dialogs/modal-account/modal-account.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
 	selector: 'app-medecins',
@@ -11,9 +12,9 @@ import {ModalUpdateComponent} from "./modal-update/modal-update.component";
 })
 export class MedecinsComponent implements OnInit {
 	protected medecins: Account[] = [];
-	protected columns = ['username', 'centre', 'actions'];
+	protected columns = ['create', 'username', 'centre', 'actions'];
 
-	constructor(private service: AdminService, private dialog: MatDialog) {
+	constructor(private service: AdminService, private dialog: MatDialog, private snackBar: MatSnackBar) {
 	}
 
 	ngOnInit(): void {
@@ -21,12 +22,21 @@ export class MedecinsComponent implements OnInit {
 	}
 
 	edit(medecin: Account) {
-		let modal = this.dialog.open(ModalUpdateComponent, {data: medecin.id});
-		modal.afterClosed().subscribe(r => {
-			if (r) {
-				this.syncMedecins();
+		this.dialog.open(ModalAccountComponent, {
+			data: {
+				required: false, callback: (m: ModalAccountData) => {
+					this.snackBar.open("Modification en cours...", "Annuler", {duration: 5000})
+						.afterDismissed()
+						.subscribe(v => {
+							if (!v.dismissedByAction)
+								this.service.updateMedecin(medecin.id, m.username, m.password, m.centre?.id ?? null)
+									.subscribe(() => {
+										this.syncMedecins();
+									});
+						});
+				}
 			}
-		})
+		});
 	}
 
 	protected syncMedecins() {
@@ -34,5 +44,23 @@ export class MedecinsComponent implements OnInit {
 			.subscribe(m => {
 				this.medecins = m;
 			})
+	}
+
+	protected create() {
+		this.dialog.open(ModalAccountComponent, {
+			data: {
+				required: true, callback: (m: ModalAccountData) => {
+					this.snackBar.open("Création en cours...", "Annuler", {duration: 5000})
+						.afterDismissed()
+						.subscribe(v => {
+							if (!v.dismissedByAction)
+								this.service.createMedecin(m.username!, m.password!, m.centre!.id)
+									.subscribe(() => {
+										this.syncMedecins();
+									});
+						});
+				}
+			}
+		});
 	}
 }
