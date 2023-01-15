@@ -2,7 +2,7 @@
 
 cd "$(dirname "$0")" || exit 1
 
-docker compose up db -d || exit 2
+#docker compose up db -d || exit 2
 
 echo Copying sources...  || exit 3
 
