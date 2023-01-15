@@ -17,8 +17,8 @@ import {ModalInscriptionComponent} from './public/liste-centres/modal-inscriptio
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
-import {ModalSuccessComponent} from './dialog/modal-success/modal-success.component';
-import {ModalFailureComponent} from './dialog/modal-failure/modal-failure.component';
+import {ModalSuccessComponent} from './dialogs/modal-success/modal-success.component';
+import {ModalFailureComponent} from './dialogs/modal-failure/modal-failure.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";

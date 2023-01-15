@@ -6,6 +6,7 @@ import org.polytech.covidapi.controller.body.UpdateMedecin;
 import org.polytech.covidapi.model.Account;
 import org.polytech.covidapi.model.Centre;
 import org.polytech.covidapi.model.Reservation;
+import org.polytech.covidapi.model.Role;
 import org.polytech.covidapi.service.AdminService;
 import org.polytech.covidapi.service.CentreService;
 import org.polytech.covidapi.service.MedecinService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -57,6 +59,21 @@ public class AdminController {
 
 		Account medecin = medecins.create(body.getUsername(), body.getPassword(), centre);
 		return ResponseEntity.created(builder.path("/admin/simple/medecin/{id}/").buildAndExpand(medecin.getId()).toUri()).build();
+	}
+
+	@GetMapping("/medecin/")
+	public ResponseEntity<List<Account>> listMedecin(Authentication auth) {
+		Optional<Account> acc_opt = admins.get(auth.getName());
+		if (acc_opt.isEmpty())
+			return ResponseEntity.internalServerError().build();
+		Account acc = acc_opt.get();
+
+		List<Account> accounts;
+		if (acc.getRole().equals(Role.SUPER_ADMIN))
+			accounts = medecins.list();
+		else
+			accounts = medecins.list(acc.getCentre());
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofMinutes(5))).body(accounts);
 	}
 
 	@GetMapping("/medecin/{id}/")
@@ -101,6 +118,21 @@ public class AdminController {
 	}
 
 	//// Reservations
+	@GetMapping("/reservation/")
+	public ResponseEntity<List<Reservation>> listReservation(@NonNull Authentication auth) {
+		Optional<Account> acc_opt = admins.get(auth.getName());
+		if (acc_opt.isEmpty())
+			return ResponseEntity.internalServerError().build();
+		Account acc = acc_opt.get();
+
+		List<Reservation> reservations;
+		if (acc.getRole().equals(Role.SUPER_ADMIN))
+			reservations = this.reservations.list();
+		else
+			reservations = this.reservations.listByCentre(acc.getCentre());
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate()).body(reservations);
+	}
+
 	@GetMapping("/reservation/{id}/")
 	public ResponseEntity<Reservation> readReservation(@PathVariable @NonNull Long id) {
 		Optional<Reservation> reservation = reservations.get(id);

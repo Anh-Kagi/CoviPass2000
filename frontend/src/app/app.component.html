@@ -4,7 +4,7 @@
 		<div>
 			<a [routerLink]="['']" mat-button>Acceuil</a>
 			<a *ngIf="!authenticated()" [routerLink]="['login']" color="accent" mat-raised-button>Connection</a>
-			<a *ngIf="authenticated()" [routerLink]="['admin']" color="accent" mat-raised-button>Tableau de bord</a>
+			<a *ngIf="authenticated()" [routerLink]="['private']" color="accent" mat-raised-button>Tableau de bord</a>
 			<a (click)="logout()" *ngIf="authenticated()" mat-button>Déconnection</a>
 		</div>
 	</mat-toolbar-row>

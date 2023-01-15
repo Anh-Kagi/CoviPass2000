@@ -7,6 +7,7 @@ import org.polytech.covidapi.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,6 +37,14 @@ public class MedecinService {
 	public Optional<Account> get(@NonNull String username) {
 		return users.find(username, Role.MEDECIN)
 				.or(() -> admins.get(username));
+	}
+
+	public List<Account> list() {
+		return users.list(Role.MEDECIN);
+	}
+
+	public List<Account> list(Centre centre) {
+		return users.list(centre, Role.MEDECIN);
 	}
 
 	public Account update(@NonNull Account user, String username, String password, Centre centre) {

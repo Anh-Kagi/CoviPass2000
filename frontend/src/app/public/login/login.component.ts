@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, NonNullableFormBuilder, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/private/auth.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ModalFailureComponent} from "../../dialog/modal-failure/modal-failure.component";
+import {ModalFailureComponent} from "../../dialogs/modal-failure/modal-failure.component";
 import {Router} from "@angular/router";
 
 @Component({
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 		this.auth.login(this.form.value.username!, this.form.value.password!)
 			.subscribe(b => {
 				if (b) {
-					this.router.navigate(['admin'])
+					this.router.navigate(['private'])
 						.then(() => {
 						});
 				} else {

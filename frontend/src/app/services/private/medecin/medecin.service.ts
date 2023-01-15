@@ -1,22 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AuthService} from "../auth.service";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Centre} from "../../public/public.service";
-
-export interface Patient {
-	id: number;
-	prenom: string;
-	nom: string;
-	mail: string;
-	telephone: string;
-}
-
-export interface Reservation {
-	id: number;
-	centre: Centre;
-	patient: Patient;
-	faite: boolean;
-}
+import {Patient} from "../../models/patient";
+import {Reservation} from "../../models/reservation";
 
 @Injectable({
 	providedIn: 'root'

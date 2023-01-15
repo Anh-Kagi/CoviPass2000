@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/private/medecin/")
@@ -43,7 +43,7 @@ public class MedecinController {
 	}
 
 	@GetMapping("/patient/{id}/reservations/")
-	public ResponseEntity<List<Reservation>> getReservations(Authentication auth, @PathVariable("id") @NonNull Long id) {
+	public ResponseEntity<Stream<Reservation>> getReservations(Authentication auth, @PathVariable("id") @NonNull Long id) {
 		Optional<Account> acc_opt = medecins.get(auth.getName());
 		if (acc_opt.isEmpty())
 			return ResponseEntity.internalServerError().build();
@@ -51,7 +51,7 @@ public class MedecinController {
 
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(Duration.ofMinutes(5)).mustRevalidate())
-				.body(patients.getReservations(id).stream().filter(r -> medecins.canAlter(acc, r.getCentre())).collect(Collectors.toList()));
+				.body(patients.getReservations(id).stream().filter(r -> medecins.canAlter(acc, r.getCentre())));
 	}
 
 	//// Vaccination

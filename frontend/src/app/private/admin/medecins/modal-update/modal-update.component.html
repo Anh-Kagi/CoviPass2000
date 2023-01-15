@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Mettre à jour Médecin</h2>
+
+<mat-dialog-content>
+	<form [formGroup]="form" class="d-flex flex-column justify-content-center">
+		<mat-form-field appearance="fill">
+			<mat-label>Nom d'utilisateur</mat-label>
+			<input formControlName="username" matInput placeholder="medecin" type="text"/>
+			<mat-hint>Nouvelle valeur: {{newValues.username ?? 'inchangé'}}</mat-hint>
+		</mat-form-field>
+
+		<mat-form-field appearance="fill">
+			<mat-label>Mot de passe</mat-label>
+			<input [type]="visiblePassword ? 'text' : 'password'" formControlName="password" matInput
+				   placeholder="mot de passe"/>
+			<button (click)="togglePasswordVisibility()" mat-icon-button matSuffix type="button">
+				<mat-icon>{{visiblePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+			</button>
+			<mat-hint>Nouvelle valeur: {{newValues.password ?? 'inchangé'}}</mat-hint>
+		</mat-form-field>
+
+		<mat-form-field appearance="fill">
+			<mat-label>Centre</mat-label>
+			<input [matAutocomplete]="autoGroup" formControlName="centre" matInput type="text"/>
+			<mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayCentre">
+				<mat-optgroup *ngFor="let group of filteredCentres | async | keyvalue" [label]="group.key">
+					<mat-option *ngFor="let centre of group.value" [value]="centre">
+						{{centre.nom}}<span class="fst-italic fw-lighter">#{{centre.id}}</span>
+					</mat-option>
+				</mat-optgroup>
+			</mat-autocomplete>
+			<mat-hint>Nouvelle
+				valeur: {{newValues.centre ? newValues.centre.nom + '#' + newValues.centre.id : '-'}}</mat-hint>
+		</mat-form-field>
+	</form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button [mat-dialog-close]="false" mat-button>Annuler</button>
+	<button (click)="updateMedecin()" color="primary" mat-raised-button>Mettre à jour</button>
+</mat-dialog-actions>

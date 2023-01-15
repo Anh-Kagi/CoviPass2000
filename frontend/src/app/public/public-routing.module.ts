@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from '@angular/router'
 import {ListeCentresComponent} from "./liste-centres/liste-centres.component";
 import {LoginComponent} from "./login/login.component";
-import {LoginGuard} from "../guard/login/login.guard";
+import {LoginGuard} from "../guards/login/login.guard";
 
 const routes: Routes = [
 	{path: '', component: ListeCentresComponent},

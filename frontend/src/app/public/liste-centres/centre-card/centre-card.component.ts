@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {ModalInscriptionComponent} from "../modal-inscription/modal-inscription.component";
-import {ModalSuccessComponent} from "../../../dialog/modal-success/modal-success.component";
+import {ModalSuccessComponent} from "../../../dialogs/modal-success/modal-success.component";
 
 @Component({
 	selector: 'app-centre-card',

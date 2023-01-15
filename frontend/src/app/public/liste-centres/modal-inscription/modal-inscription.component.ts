@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {PublicService} from "../../../services/public/public.service";
 import {catchError, throwError} from "rxjs";
-import {ModalFailureComponent} from "../../../dialog/modal-failure/modal-failure.component";
+import {ModalFailureComponent} from "../../../dialogs/modal-failure/modal-failure.component";
 
 @Component({
 	selector: 'app-modal-inscription',
@@ -41,7 +41,7 @@ export class ModalInscriptionComponent implements OnInit {
 		let data = this.form.value;
 		this.service.inscrire(this.centre, data.nom!, data.prenom!, data.mail!, data.tel!)
 			.pipe(
-				catchError((err, o) => {
+				catchError(() => {
 					this.dialog.open(ModalFailureComponent);
 					return throwError(() => new Error('Erreur lors de l\'inscription'));
 				})

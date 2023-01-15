@@ -26,6 +26,10 @@ public class CentreService {
 		return centres.findById(id);
 	}
 
+	public List<Centre> list() {
+		return centres.findAll();
+	}
+
 	public List<Centre> getAllByVille(@NonNull String ville) {
 		return centres.findAllByVilleIgnoreCase(ville);
 	}

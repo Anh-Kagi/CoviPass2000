@@ -7,6 +7,7 @@ import org.polytech.covidapi.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,10 @@ public class AdminService {
 	public Optional<Account> get(@NonNull String username) {
 		return users.find(username, Role.ADMIN)
 				.or(() -> users.find(username, Role.SUPER_ADMIN));
+	}
+
+	public List<Account> list() {
+		return users.list(Role.ADMIN);
 	}
 
 	public Account update(@NonNull Account account, String username, String password, Centre centre) {

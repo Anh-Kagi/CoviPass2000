@@ -1,4 +1,5 @@
 <h2 mat-dialog-title>Réserver un rendez-vous</h2>
+
 <mat-dialog-content>
 	<form [formGroup]="form">
 		<mat-form-field>
@@ -24,6 +25,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-	<button [mat-dialog-close]="false" color="accent" mat-raised-button>Annuler</button>
+	<button [mat-dialog-close]="false" mat-button>Annuler</button>
 	<button (click)="sendReservation()" [disabled]="!form.valid" color="primary" mat-raised-button>Reserver</button>
 </mat-dialog-actions>

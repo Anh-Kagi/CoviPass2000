@@ -1,21 +1,7 @@
 import {EventEmitter, Injectable, Output} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable} from "rxjs";
-import {Centre} from "../public/public.service";
-
-export enum Role {
-	MEDECIN = 'MEDECIN',
-	ADMIN = 'ADMIN',
-	SADMIN = 'SUPER_ADMIN'
-}
-
-export interface Account {
-	id: number;
-	username: string,
-	password: string,
-	centre: Centre | null
-	role: Role,
-}
+import {Account} from "../models/account";
 
 @Injectable({
 	providedIn: 'root'

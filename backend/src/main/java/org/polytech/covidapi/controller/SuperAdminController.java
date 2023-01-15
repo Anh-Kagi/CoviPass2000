@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +36,11 @@ public class SuperAdminController {
 	public ResponseEntity<Centre> createCentre(@RequestBody CreateCentre body, UriComponentsBuilder builder) {
 		Centre centre = centres.create(body.getNom(), body.getVille(), body.getAdresse());
 		return ResponseEntity.created(builder.path("/admin/super/centre/{id}/").buildAndExpand(centre.getId()).toUri()).build();
+	}
+
+	@GetMapping("/centre/")
+	public ResponseEntity<List<Centre>> listCentre() {
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofMinutes(5))).body(centres.list());
 	}
 
 	@GetMapping("/centre/{id}/")
@@ -81,6 +87,11 @@ public class SuperAdminController {
 
 		Account admin = admins.create(body.getUsername(), body.getPassword(), centre_opt.get());
 		return ResponseEntity.created(builder.path("/admin/super/admin/{id}/").buildAndExpand(admin.getId()).toUri()).build();
+	}
+
+	@GetMapping("/admin/")
+	public ResponseEntity<List<Account>> listAdmin() {
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofMinutes(5))).body(admins.list());
 	}
 
 	@GetMapping("/admin/{id}/")

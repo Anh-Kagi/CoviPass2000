@@ -31,6 +31,14 @@ public class ReservationService {
 		return reservations.findByPatient(patient);
 	}
 
+	public List<Reservation> listByCentre(@NonNull Centre centre) {
+		return reservations.findByCentre(centre);
+	}
+
+	public List<Reservation> list() {
+		return reservations.findAll();
+	}
+
 	public Reservation create(@NonNull Centre centre,
 	                          @NonNull String nom,
 	                          @NonNull String prenom,

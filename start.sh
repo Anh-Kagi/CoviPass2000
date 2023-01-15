@@ -16,7 +16,7 @@ echo Building frontend... || exit 8
 
 cd ./build/frontend/ || exit 9
 
-npm install && npm run build || exit 10
+npm install && npm run build --configuration="development" || exit 10
 
 echo Integrating frontend into backend... || exit 11
 

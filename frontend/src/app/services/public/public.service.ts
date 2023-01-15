@@ -1,12 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-
-export interface Centre {
-	id: number;
-	nom: String;
-	adresse: String;
-	ville: String;
-}
+import {Centre} from "../models/centre";
 
 @Injectable({
 	providedIn: 'root'
