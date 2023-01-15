@@ -8,7 +8,8 @@ const routes: Routes = [
 	{
 		path: 'private',
 		loadChildren: () => import('./private/private.module').then(m => m.PrivateModule),
-		canLoad: [PrivateGuard]
+		canLoad: [PrivateGuard],
+		canActivate: [PrivateGuard]
 	},
 	{path: '**', component: NotFoundComponent}
 ];
