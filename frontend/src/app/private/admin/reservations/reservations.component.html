@@ -1,1 +1,46 @@
-<p>reservations works!</p>
+<div class="d-flex flex-column justify-content-center">
+	<table [dataSource]="reservations" mat-table>
+		<ng-container matColumnDef="id">
+			<th *matHeaderCellDef mat-header-cell>N°</th>
+			<td *matCellDef="let element" mat-cell><span
+				class="fst-italic fw-lighter">#{{element.reservation.id}}</span></td>
+		</ng-container>
+
+		<ng-container matColumnDef="patient">
+			<th *matHeaderCellDef mat-header-cell>Nom</th>
+			<td *matCellDef="let element"
+				mat-cell>{{element.reservation.patient.nom}} {{element.reservation.patient.prenom}}<span
+				class="fst-italic fw-lighter">#{{element.reservation.patient.id}}</span></td>
+		</ng-container>
+
+		<ng-container matColumnDef="centre">
+			<th *matHeaderCellDef mat-header-cell>Centre</th>
+			<td *matCellDef="let element" mat-cell>
+				{{element.reservation.centre.nom}}
+				<span class="fst-italic fw-lighter">#{{element.reservation.centre.id}}</span>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="faite">
+			<th *matHeaderCellDef mat-header-cell>Effectuée</th>
+			<td *matCellDef="let element" mat-cell>
+				<mat-icon>{{element.reservation.faite ? 'check_circle' : 'radio_button_unchecked'}}</mat-icon>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="action">
+			<th *matHeaderCellDef mat-header-cell>Action</th>
+			<td *matCellDef="let element" mat-cell>
+				<button *ngIf="element.todelete" color="accent" mat-icon-button>
+					<mat-icon class="spinning">sync</mat-icon>
+				</button>
+				<button (click)="delete(element)" *ngIf="!element.todelete" color="accent" mat-icon-button>
+					<mat-icon>delete</mat-icon>
+				</button>
+			</td>
+		</ng-container>
+
+		<tr *matHeaderRowDef="columns" mat-header-row></tr>
+		<tr *matRowDef="let row; columns: columns;" mat-row></tr>
+	</table>
+</div>
