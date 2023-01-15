@@ -44,3 +44,7 @@ When the project is built, the frontend is built,
 and the resulting files are copied to the backend's resources,
 for them to be served as static files.
 
+## Team
+
+- Bastien PESME (Anh-Kagi) n°31812375
+- Youssef IFRI (Yousssssss) n°31803706
